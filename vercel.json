@@ -1,0 +1,5 @@
+{
+  "buildCommand": "/tmp/flutter/bin/flutter build web --release",
+  "outputDirectory": "build/web",
+  "installCommand": "git clone https://github.com/flutter/flutter.git -b stable /tmp/flutter && /tmp/flutter/bin/flutter precache --web"
+}
