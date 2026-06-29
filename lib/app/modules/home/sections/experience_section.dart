@@ -30,20 +30,27 @@ class ExperienceSection extends StatelessWidget {
             Positioned(
               top: -20,
               right: -10,
-              child: Obx(() => Text(
-                languageController.getText('nav.experience', defaultValue: 'Experience').toUpperCase(),
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: ResponsiveUtils.getValueForScreenType<double>(
-                    context: context,
-                    mobile: 48.0,
-                    tablet: screenWidth * 0.14,
-                    desktop: screenWidth * 0.18,
+              child: Obx(
+                () => Text(
+                  languageController
+                      .getText('nav.experience', defaultValue: 'Experience')
+                      .toUpperCase(),
+                  style: GoogleFonts.spaceGrotesk(
+                    fontSize: ResponsiveUtils.getValueForScreenType<double>(
+                      context: context,
+                      mobile: 48.0,
+                      tablet: screenWidth * 0.14,
+                      desktop: screenWidth * 0.18,
+                    ),
+                    fontWeight: FontWeight.w800,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withValues(alpha: 0.03),
+                    letterSpacing: -3,
                   ),
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white.withValues(alpha: 0.03),
-                  letterSpacing: -3,
                 ),
-              )),
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +58,8 @@ class ExperienceSection extends StatelessWidget {
                 const SizedBox(height: 40),
                 ScrollFadeIn(
                   child: Obx(() {
-                    final accent = Get.find<SceneDirector>().currentAccent.value;
+                    final accent =
+                        Get.find<SceneDirector>().currentAccent.value;
                     return NumberedSectionHeading(
                       number: '02',
                       title: languageController.getText(
@@ -64,7 +72,8 @@ class ExperienceSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 Obx(() {
-                  final raw = languageController.cvData['experiences'] as List? ?? [];
+                  final raw =
+                      languageController.cvData['experiences'] as List? ?? [];
                   final experiences = raw.cast<Map<String, dynamic>>();
                   if (experiences.isEmpty) return const SizedBox.shrink();
                   return _ExperienceTabs(
@@ -116,13 +125,15 @@ class _ExperienceTabsState extends State<_ExperienceTabs> {
               itemBuilder: (context, i) {
                 final exp = widget.experiences[i];
                 final isActive = i == _selectedIndex;
-                return Obx(() => _TabButton(
-                  label: (exp['company'] as String?) ?? '',
-                  isActive: isActive,
-                  isVertical: false,
-                  accent: sceneDirector.currentAccent.value,
-                  onTap: () => setState(() => _selectedIndex = i),
-                ));
+                return Obx(
+                  () => _TabButton(
+                    label: (exp['company'] as String?) ?? '',
+                    isActive: isActive,
+                    isVertical: false,
+                    accent: sceneDirector.currentAccent.value,
+                    onTap: () => setState(() => _selectedIndex = i),
+                  ),
+                );
               },
             ),
           ),
@@ -147,12 +158,14 @@ class _ExperienceTabsState extends State<_ExperienceTabs> {
         // Vertical timeline with dot markers
         SizedBox(
           width: 200,
-          child: Obx(() => _VerticalTimeline(
-            experiences: widget.experiences,
-            selectedIndex: _selectedIndex,
-            accent: sceneDirector.currentAccent.value,
-            onSelect: (i) => setState(() => _selectedIndex = i),
-          )),
+          child: Obx(
+            () => _VerticalTimeline(
+              experiences: widget.experiences,
+              selectedIndex: _selectedIndex,
+              accent: sceneDirector.currentAccent.value,
+              onSelect: (i) => setState(() => _selectedIndex = i),
+            ),
+          ),
         ),
         const SizedBox(width: 32),
         // Detail panel with crossfade
@@ -246,17 +259,19 @@ class _TimelineEntryState extends State<_TimelineEntry> {
                   height: widget.isActive ? 10 : 6,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: widget.isActive
-                        ? widget.accent
-                        : AppColors.textSecondary.withValues(alpha: 0.3),
-                    boxShadow: widget.isActive
-                        ? [
-                            BoxShadow(
-                              color: widget.accent.withValues(alpha: 0.4),
-                              blurRadius: 8,
-                            ),
-                          ]
-                        : [],
+                    color:
+                        widget.isActive
+                            ? widget.accent
+                            : AppColors.textSecondary.withValues(alpha: 0.3),
+                    boxShadow:
+                        widget.isActive
+                            ? [
+                              BoxShadow(
+                                color: widget.accent.withValues(alpha: 0.4),
+                                blurRadius: 8,
+                              ),
+                            ]
+                            : [],
                   ),
                 ),
                 if (!widget.isLast)
@@ -279,9 +294,12 @@ class _TimelineEntryState extends State<_TimelineEntry> {
                 duration: AppDurations.fast,
                 style: GoogleFonts.jetBrainsMono(
                   fontSize: 13,
-                  color: widget.isActive
-                      ? widget.accent
-                      : (_hovered ? AppColors.textBright : AppColors.textPrimary),
+                  color:
+                      widget.isActive
+                          ? widget.accent
+                          : (_hovered
+                              ? AppColors.textBrightOf(context)
+                              : AppColors.textPrimary),
                 ),
                 child: Text(widget.label),
               ),
@@ -323,14 +341,16 @@ class _TabButtonState extends State<_TabButton> {
       duration: AppDurations.fast,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: widget.isActive || _hovered
-            ? widget.accent.withValues(alpha: 0.08)
-            : Colors.transparent,
+        color:
+            widget.isActive || _hovered
+                ? widget.accent.withValues(alpha: 0.08)
+                : Colors.transparent,
         border: Border(
           bottom: BorderSide(
-            color: widget.isActive
-                ? widget.accent
-                : AppColors.textSecondary.withValues(alpha: 0.2),
+            color:
+                widget.isActive
+                    ? widget.accent
+                    : AppColors.textSecondary.withValues(alpha: 0.2),
             width: widget.isActive ? 2 : 1,
           ),
         ),
@@ -363,13 +383,20 @@ class _ExperienceDetail extends StatelessWidget {
     final position = (exp['position'] as String?) ?? '';
     final company = (exp['company'] as String?) ?? '';
     final startDate = (exp['start_date'] as String?) ?? '';
-    final endDate = (exp['end_date'] as String?) ??
-        languageController.getText('experience_section.present', defaultValue: 'Present');
+    final endDate =
+        (exp['end_date'] as String?) ??
+        languageController.getText(
+          'experience_section.present',
+          defaultValue: 'Present',
+        );
     final description = (exp['description'] as String?) ?? '';
 
-    final bullets = description.toString().split('\n')
-        .where((s) => s.trim().isNotEmpty)
-        .toList();
+    final bullets =
+        description
+            .toString()
+            .split('\n')
+            .where((s) => s.trim().isNotEmpty)
+            .toList();
     if (bullets.isEmpty && description.toString().isNotEmpty) {
       bullets.add(description.toString());
     }
@@ -384,7 +411,7 @@ class _ExperienceDetail extends StatelessWidget {
             style: GoogleFonts.spaceGrotesk(
               fontSize: 24,
               fontWeight: FontWeight.w700,
-              color: AppColors.textBright,
+              color: AppColors.textBrightOf(context),
             ),
           ),
           const SizedBox(height: 4),
@@ -417,10 +444,7 @@ class _ExperienceDetail extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Text(
-                      bullet.trim(),
-                      style: AppTypography.bodySmall,
-                    ),
+                    child: Text(bullet.trim(), style: AppTypography.bodySmall),
                   ),
                 ],
               ),

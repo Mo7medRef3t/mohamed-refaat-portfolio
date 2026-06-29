@@ -72,20 +72,27 @@ class _ProjectsSectionState extends State<ProjectsSection> {
           Positioned(
             top: -20,
             left: -10,
-            child: Obx(() => Text(
-              languageController.getText('nav.projects', defaultValue: 'Projects').toUpperCase(),
-              style: GoogleFonts.spaceGrotesk(
-                fontSize: ResponsiveUtils.getValueForScreenType<double>(
-                  context: context,
-                  mobile: 48.0,
-                  tablet: screenWidth * 0.14,
-                  desktop: screenWidth * 0.18,
+            child: Obx(
+              () => Text(
+                languageController
+                    .getText('nav.projects', defaultValue: 'Projects')
+                    .toUpperCase(),
+                style: GoogleFonts.spaceGrotesk(
+                  fontSize: ResponsiveUtils.getValueForScreenType<double>(
+                    context: context,
+                    mobile: 48.0,
+                    tablet: screenWidth * 0.14,
+                    desktop: screenWidth * 0.18,
+                  ),
+                  fontWeight: FontWeight.w800,
+                  color: (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black)
+                      .withValues(alpha: 0.03),
+                  letterSpacing: -4,
                 ),
-                fontWeight: FontWeight.w800,
-                color: Colors.white.withValues(alpha: 0.03),
-                letterSpacing: -4,
               ),
-            )),
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +116,8 @@ class _ProjectsSectionState extends State<ProjectsSection> {
               if (categories.isNotEmpty)
                 ScrollFadeIn(
                   child: Obx(() {
-                    final accent = Get.find<SceneDirector>().currentAccent.value;
+                    final accent =
+                        Get.find<SceneDirector>().currentAccent.value;
                     final filterAllLabel = languageController.getText(
                       'projects_section.filter_all',
                       defaultValue: 'All',
@@ -131,7 +139,10 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                               label: category,
                               isSelected: _selectedCategory == category,
                               accent: accent,
-                              onTap: () => setState(() => _selectedCategory = category),
+                              onTap:
+                                  () => setState(
+                                    () => _selectedCategory = category,
+                                  ),
                             ),
                         ],
                       ),
@@ -150,14 +161,18 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                   children: [
                     for (int i = 0; i < filteredProjects.length; i++) ...[
                       ScrollFadeIn(
-                        delay: Duration(milliseconds: i * AppDurations.staggerShort.inMilliseconds),
+                        delay: Duration(
+                          milliseconds:
+                              i * AppDurations.staggerShort.inMilliseconds,
+                        ),
                         child: _ProjectCard(
                           project: filteredProjects[i] as Map<String, dynamic>,
                           isReversed: !isMobile && i.isOdd,
                           isMobile: isMobile,
                         ),
                       ),
-                      if (i < filteredProjects.length - 1) const SizedBox(height: 32),
+                      if (i < filteredProjects.length - 1)
+                        const SizedBox(height: 32),
                     ],
                   ],
                 ),
@@ -192,43 +207,56 @@ class _CategoryChipState extends State<_CategoryChip> {
   bool _hovered = false;
 
   @override
-  Widget build(BuildContext context) => MouseRegion(
-    cursor: SystemMouseCursors.click,
-    onEnter: (_) => setState(() => _hovered = true),
-    onExit: (_) => setState(() => _hovered = false),
-    child: GestureDetector(
-      onTap: widget.onTap,
-      child: AnimatedContainer(
-        duration: AppDurations.fast,
-        curve: Curves.easeOut,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: widget.isSelected
-              ? widget.accent.withValues(alpha: 0.15)
-              : _hovered
-                  ? widget.accent.withValues(alpha: 0.06)
-                  : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: widget.isSelected
-                ? widget.accent
-                : _hovered
-                    ? widget.accent.withValues(alpha: 0.4)
-                    : AppColors.textSecondary.withValues(alpha: 0.3),
-            width: widget.isSelected ? 1.5 : 1,
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: AppDurations.fast,
+          curve: Curves.easeOut,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color:
+                widget.isSelected
+                    ? widget.accent.withValues(alpha: 0.15)
+                    : _hovered
+                    ? widget.accent.withValues(alpha: 0.06)
+                    : Colors.transparent,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color:
+                  widget.isSelected
+                      ? widget.accent
+                      : _hovered
+                      ? widget.accent.withValues(alpha: 0.4)
+                      : isDark
+                      ? AppColors.textSecondary.withValues(alpha: 0.3)
+                      : AppColorsLight.textSecondary.withValues(alpha: 0.3),
+              width: widget.isSelected ? 1.5 : 1,
+            ),
           ),
-        ),
-        child: Text(
-          widget.label,
-          style: GoogleFonts.jetBrainsMono(
-            fontSize: 13,
-            fontWeight: widget.isSelected ? FontWeight.w600 : FontWeight.w400,
-            color: widget.isSelected ? widget.accent : AppColors.textPrimary,
+          child: Text(
+            widget.label,
+            style: GoogleFonts.jetBrainsMono(
+              fontSize: 13,
+              fontWeight: widget.isSelected ? FontWeight.w600 : FontWeight.w400,
+              color:
+                  widget.isSelected
+                      ? widget.accent
+                      : isDark
+                      ? AppColors.textPrimary
+                      : AppColorsLight.textPrimary,
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 // Project card — film strip style with border light + scale on hover
@@ -269,6 +297,8 @@ class _ProjectCardState extends State<_ProjectCard> {
     final description = (p['description'] as String?) ?? '';
     final technologies = _extractTechnologies(p);
     final url = _extractUrl(p);
+    final imagePath = (p['image'] as String?) ?? '';
+    final caseStudy = p['case_study'] as Map<String, dynamic>? ?? {};
 
     return Obx(() {
       final accent = Get.find<SceneDirector>().currentAccent.value;
@@ -280,8 +310,13 @@ class _ProjectCardState extends State<_ProjectCard> {
         child: AnimatedContainer(
           duration: AppDurations.fast,
           curve: Curves.easeOut,
-          transform: Matrix4.identity()
-            ..scaleByDouble(_hovered ? 1.02 : 1.0, _hovered ? 1.02 : 1.0, 1.0, 1.0),
+          transform:
+              Matrix4.identity()..scaleByDouble(
+                _hovered ? 1.02 : 1.0,
+                _hovered ? 1.02 : 1.0,
+                1.0,
+                1.0,
+              ),
           transformAlignment: Alignment.center,
           child: AnimatedOpacity(
             duration: AppDurations.fast,
@@ -291,8 +326,24 @@ class _ProjectCardState extends State<_ProjectCard> {
               child: Stack(
                 children: [
                   isMobile
-                      ? _buildMobileContent(title, description, technologies, url, accent)
-                      : _buildDesktopContent(title, description, technologies, url, accent),
+                      ? _buildMobileContent(
+                        title,
+                        description,
+                        technologies,
+                        url,
+                        imagePath,
+                        caseStudy,
+                        accent,
+                      )
+                      : _buildDesktopContent(
+                        title,
+                        description,
+                        technologies,
+                        url,
+                        imagePath,
+                        caseStudy,
+                        accent,
+                      ),
                   if (_hasCaseStudy)
                     Positioned(
                       bottom: 0,
@@ -333,53 +384,141 @@ class _ProjectCardState extends State<_ProjectCard> {
     String description,
     List<String> technologies,
     String url,
+    String imagePath,
+    Map<String, dynamic> caseStudy,
     Color accent,
   ) {
+    final problem = (caseStudy['problem'] as String?) ?? '';
+    final solution = (caseStudy['solution'] as String?) ?? '';
+    final result = (caseStudy['result'] as String?) ?? '';
+    final langCtrl = Get.find<LanguageController>();
+
     final content = [
+      // Image Section - Larger size
+      if (imagePath.isNotEmpty)
+        Expanded(
+          flex: 2,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 300),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.contain,
+                errorBuilder:
+                    (context, error, stackTrace) => Container(
+                      height: 300,
+                      decoration: BoxDecoration(
+                        color: accent.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(Icons.image, size: 48, color: accent),
+                    ),
+              ),
+            ),
+          ),
+        ),
+      if (imagePath.isNotEmpty) const SizedBox(width: 24),
+      // Content Section
       Expanded(
         flex: 3,
         child: Column(
-          crossAxisAlignment: isReversed ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isReversed ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             TextScramble(
               text: title,
               style: GoogleFonts.spaceGrotesk(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textBright,
+                color: AppColors.textBrightOf(context),
               ),
             ),
             const SizedBox(height: 16),
             Text(
               description,
-              style: AppTypography.body,
+              style: AppTypography.body.copyWith(
+                color: AppColors.textPrimaryOf(context),
+              ),
               textAlign: isReversed ? TextAlign.right : TextAlign.left,
             ),
             const SizedBox(height: 20),
+
+            // Case Study - Challenge
+            if (problem.isNotEmpty) ...[
+              _FrontCaseStudySection(
+                heading: langCtrl.getText(
+                  'projects_section.case_study_problem',
+                  defaultValue: 'The Challenge',
+                ),
+                body: problem,
+                accent: accent,
+                isReversed: isReversed,
+              ),
+              const SizedBox(height: 12),
+            ],
+
+            // Case Study - Approach
+            if (solution.isNotEmpty) ...[
+              _FrontCaseStudySection(
+                heading: langCtrl.getText(
+                  'projects_section.case_study_solution',
+                  defaultValue: 'The Approach',
+                ),
+                body: solution,
+                accent: accent,
+                isReversed: isReversed,
+              ),
+              const SizedBox(height: 12),
+            ],
+
+            // Case Study - Result
+            if (result.isNotEmpty) ...[
+              _FrontCaseStudySection(
+                heading: langCtrl.getText(
+                  'projects_section.case_study_result',
+                  defaultValue: 'The Result',
+                ),
+                body: result,
+                accent: accent,
+                isReversed: isReversed,
+              ),
+              const SizedBox(height: 12),
+            ],
+
             // Tech pills
             Wrap(
               alignment: isReversed ? WrapAlignment.end : WrapAlignment.start,
               spacing: 8,
               runSpacing: 8,
-              children: technologies.map((tech) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                decoration: BoxDecoration(
-                  color: accent.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  tech,
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 12,
-                    color: accent,
-                  ),
-                ),
-              )).toList(),
+              children:
+                  technologies
+                      .map(
+                        (tech) => Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: accent.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Text(
+                            tech,
+                            style: GoogleFonts.jetBrainsMono(
+                              fontSize: 12,
+                              color: accent,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
             ),
             if (url.isNotEmpty) ...[
               const SizedBox(height: 16),
               Align(
-                alignment: isReversed ? Alignment.centerRight : Alignment.centerLeft,
+                alignment:
+                    isReversed ? Alignment.centerRight : Alignment.centerLeft,
                 child: _ProjectLink(url: url, accent: accent),
               ),
             ],
@@ -399,46 +538,136 @@ class _ProjectCardState extends State<_ProjectCard> {
     String description,
     List<String> technologies,
     String url,
+    String imagePath,
+    Map<String, dynamic> caseStudy,
     Color accent,
-  ) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: TextScramble(
-              text: title,
-              style: GoogleFonts.spaceGrotesk(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textBright,
-              ),
+  ) {
+    final problem = (caseStudy['problem'] as String?) ?? '';
+    final solution = (caseStudy['solution'] as String?) ?? '';
+    final result = (caseStudy['result'] as String?) ?? '';
+    final langCtrl = Get.find<LanguageController>();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Image Section - Larger size
+        if (imagePath.isNotEmpty) ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.contain,
+              height: 180,
+              width: double.infinity,
+              errorBuilder:
+                  (context, error, stackTrace) => Container(
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: accent.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(Icons.image, size: 48, color: accent),
+                  ),
             ),
           ),
-          if (url.isNotEmpty) _ProjectLink(url: url, accent: accent),
+          const SizedBox(height: 16),
         ],
-      ),
-      const SizedBox(height: 12),
-      Text(description, style: AppTypography.bodySmall),
-      const SizedBox(height: 16),
-      Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: technologies.map((tech) => Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(
-            color: accent.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: TextScramble(
+                text: title,
+                style: GoogleFonts.spaceGrotesk(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textBrightOf(context),
+                ),
+              ),
+            ),
+            if (url.isNotEmpty) _ProjectLink(url: url, accent: accent),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Text(
+          description,
+          style: AppTypography.bodySmall.copyWith(
+            color: AppColors.textPrimaryOf(context),
           ),
-          child: Text(
-            tech,
-            style: GoogleFonts.jetBrainsMono(fontSize: 11, color: accent),
+        ),
+        const SizedBox(height: 16),
+
+        // Case Study - Challenge
+        if (problem.isNotEmpty) ...[
+          _FrontCaseStudySection(
+            heading: langCtrl.getText(
+              'projects_section.case_study_problem',
+              defaultValue: 'The Challenge',
+            ),
+            body: problem,
+            accent: accent,
+            isReversed: false,
           ),
-        )).toList(),
-      ),
-    ],
-  );
+          const SizedBox(height: 12),
+        ],
+
+        // Case Study - Approach
+        if (solution.isNotEmpty) ...[
+          _FrontCaseStudySection(
+            heading: langCtrl.getText(
+              'projects_section.case_study_solution',
+              defaultValue: 'The Approach',
+            ),
+            body: solution,
+            accent: accent,
+            isReversed: false,
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // Case Study - Result
+        if (result.isNotEmpty) ...[
+          _FrontCaseStudySection(
+            heading: langCtrl.getText(
+              'projects_section.case_study_result',
+              defaultValue: 'The Result',
+            ),
+            body: result,
+            accent: accent,
+            isReversed: false,
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children:
+              technologies
+                  .map(
+                    (tech) => Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: accent.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        tech,
+                        style: GoogleFonts.jetBrainsMono(
+                          fontSize: 11,
+                          color: accent,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+        ),
+      ],
+    );
+  }
 
   List<String> _extractTechnologies(Map<String, dynamic> project) {
     if (project['technologies'] case final List<dynamic> techs) {
@@ -449,12 +678,54 @@ class _ProjectCardState extends State<_ProjectCard> {
 
   String _extractUrl(Map<String, dynamic> project) => switch (project['url']) {
     final String url => url,
-    final Map<String, dynamic> urls => [
-      for (final key in ['website', 'google_play', 'app_store'])
-        if (urls[key] case final String url) url,
-    ].firstOrNull ?? '',
+    final Map<String, dynamic> urls =>
+      [
+            for (final key in ['website', 'google_play', 'app_store'])
+              if (urls[key] case final String url) url,
+          ].firstOrNull ??
+          '',
     _ => '',
   };
+}
+
+// Front case study section
+class _FrontCaseStudySection extends StatelessWidget {
+  const _FrontCaseStudySection({
+    required this.heading,
+    required this.body,
+    required this.accent,
+    required this.isReversed,
+  });
+
+  final String heading;
+  final String body;
+  final Color accent;
+  final bool isReversed;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment:
+        isReversed ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+    children: [
+      Text(
+        heading,
+        style: AppTypography.caption.copyWith(
+          color: accent,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      const SizedBox(height: 4),
+      Text(
+        body,
+        style: AppTypography.bodySmall.copyWith(
+          color: AppColors.textPrimaryOf(context),
+        ),
+        textAlign: isReversed ? TextAlign.right : TextAlign.left,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
+      ),
+    ],
+  );
 }
 
 // Project link icon
@@ -471,38 +742,61 @@ class _ProjectLinkState extends State<_ProjectLink> {
   bool _hovered = false;
 
   @override
-  Widget build(BuildContext context) => CinematicFocusable(
-    onTap: () async {
-      var urlString = widget.url;
-      if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {
-        urlString = 'https://$urlString';
-      }
-      final uri = Uri.parse(urlString);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-      }
-    },
-    onHoverChanged: (hovered) => setState(() => _hovered = hovered),
-    borderRadius: BorderRadius.circular(6),
-    child: AnimatedContainer(
-      duration: AppDurations.fast,
-      padding: const EdgeInsets.all(8),
-      transform: Matrix4.diagonal3Values(_hovered ? 1.1 : 1.0, _hovered ? 1.1 : 1.0, 1.0),
-      transformAlignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: _hovered ? widget.accent.withValues(alpha: 0.1) : Colors.transparent,
-        borderRadius: BorderRadius.circular(6),
-        boxShadow: _hovered
-            ? [BoxShadow(color: widget.accent.withValues(alpha: 0.2), blurRadius: 12)]
-            : [],
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return CinematicFocusable(
+      onTap: () async {
+        var urlString = widget.url;
+        if (!urlString.startsWith('http://') &&
+            !urlString.startsWith('https://')) {
+          urlString = 'https://$urlString';
+        }
+        final uri = Uri.parse(urlString);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        }
+      },
+      onHoverChanged: (hovered) => setState(() => _hovered = hovered),
+      borderRadius: BorderRadius.circular(6),
+      child: AnimatedContainer(
+        duration: AppDurations.fast,
+        padding: const EdgeInsets.all(8),
+        transform: Matrix4.diagonal3Values(
+          _hovered ? 1.1 : 1.0,
+          _hovered ? 1.1 : 1.0,
+          1.0,
+        ),
+        transformAlignment: Alignment.center,
+        decoration: BoxDecoration(
+          color:
+              _hovered
+                  ? widget.accent.withValues(alpha: 0.1)
+                  : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+          boxShadow:
+              _hovered
+                  ? [
+                    BoxShadow(
+                      color: widget.accent.withValues(alpha: 0.2),
+                      blurRadius: 12,
+                    ),
+                  ]
+                  : [],
+        ),
+        child: Icon(
+          Icons.open_in_new_rounded,
+          size: 20,
+          color:
+              _hovered
+                  ? widget.accent
+                  : isDark
+                  ? AppColors.textPrimary
+                  : AppColorsLight.textPrimary,
+        ),
       ),
-      child: Icon(
-        Icons.open_in_new_rounded,
-        size: 20,
-        color: _hovered ? widget.accent : AppColors.textPrimary,
-      ),
-    ),
-  );
+    );
+  }
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -553,22 +847,25 @@ class _FlipCardState extends State<_FlipCard>
     child: AnimatedBuilder(
       animation: _controller,
       builder: (context, _) {
-        final curved = CinematicCurves.dramaticEntrance
-            .transform(_controller.value);
+        final curved = CinematicCurves.dramaticEntrance.transform(
+          _controller.value,
+        );
         final angle = curved * pi;
         final isFront = angle < pi / 2;
         return Transform(
           alignment: Alignment.center,
-          transform: Matrix4.identity()
-            ..setEntry(3, 2, 0.001)
-            ..rotateY(angle),
-          child: isFront
-              ? widget.front
-              : Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()..rotateY(pi),
-                  child: widget.back,
-                ),
+          transform:
+              Matrix4.identity()
+                ..setEntry(3, 2, 0.001)
+                ..rotateY(angle),
+          child:
+              isFront
+                  ? widget.front
+                  : Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..rotateY(pi),
+                    child: widget.back,
+                  ),
         );
       },
     ),
@@ -576,7 +873,7 @@ class _FlipCardState extends State<_FlipCard>
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// Project card back face — compact case study view
+// Project card back face — detailed view with gallery
 // ──────────────────────────────────────────────────────────────────────────────
 
 class _ProjectCardBack extends StatelessWidget {
@@ -593,13 +890,11 @@ class _ProjectCardBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = (project['title'] as String?) ?? 'Project';
-    final caseStudy = project['case_study'] as Map<String, dynamic>? ?? {};
-    final problem = caseStudy['problem'] as String? ?? '';
-    final solution = caseStudy['solution'] as String? ?? '';
-    final result = caseStudy['result'] as String? ?? '';
+    final detailedDescription =
+        (project['detailed_description'] as String?) ?? '';
+    final galleryImages = _extractGalleryImages(project);
     final technologies = _extractTechnologies(project);
     final url = _extractUrl(project);
-    final langCtrl = Get.find<LanguageController>();
 
     return BorderLightCard(
       glowColor: accent,
@@ -611,43 +906,64 @@ class _ProjectCardBack extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Title
-                Text(
-                  title,
-                  style: AppTypography.h3.copyWith(color: accent),
-                ),
+                Text(title, style: AppTypography.h3.copyWith(color: accent)),
                 const SizedBox(height: 16),
 
-                // Case study sections
-                if (problem.isNotEmpty) ...[
-                  _BackSection(
-                    heading: langCtrl.getText(
-                      'projects_section.case_study_problem',
-                      defaultValue: 'The Challenge',
+                // Detailed Description
+                if (detailedDescription.isNotEmpty) ...[
+                  Text(
+                    detailedDescription,
+                    style: AppTypography.body.copyWith(
+                      color: AppColors.textPrimaryOf(context),
                     ),
-                    body: problem,
-                    accent: accent,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                 ],
-                if (solution.isNotEmpty) ...[
-                  _BackSection(
-                    heading: langCtrl.getText(
-                      'projects_section.case_study_solution',
-                      defaultValue: 'The Approach',
+
+                // Gallery Images
+                if (galleryImages.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    'Screenshots',
+                    style: AppTypography.caption.copyWith(
+                      color: accent,
+                      fontWeight: FontWeight.w600,
                     ),
-                    body: solution,
-                    accent: accent,
                   ),
-                  const SizedBox(height: 12),
-                ],
-                if (result.isNotEmpty) ...[
-                  _BackSection(
-                    heading: langCtrl.getText(
-                      'projects_section.case_study_result',
-                      defaultValue: 'The Result',
-                    ),
-                    body: result,
-                    accent: accent,
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children:
+                        galleryImages
+                            .map(
+                              (imagePath) => ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset(
+                                  imagePath,
+                                  width: isMobile ? 80 : 100,
+                                  height: isMobile ? 140 : 180,
+                                  fit: BoxFit.cover,
+                                  errorBuilder:
+                                      (context, error, stackTrace) => Container(
+                                        width: isMobile ? 80 : 100,
+                                        height: isMobile ? 140 : 180,
+                                        decoration: BoxDecoration(
+                                          color: accent.withValues(alpha: 0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.image,
+                                          size: 24,
+                                          color: accent,
+                                        ),
+                                      ),
+                                ),
+                              ),
+                            )
+                            .toList(),
                   ),
                   const SizedBox(height: 12),
                 ],
@@ -658,25 +974,28 @@ class _ProjectCardBack extends StatelessWidget {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: technologies
-                        .map((tech) => Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: accent.withValues(alpha: 0.08),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                tech,
-                                style: GoogleFonts.jetBrainsMono(
-                                  fontSize: 11,
-                                  color: accent,
+                    children:
+                        technologies
+                            .map(
+                              (tech) => Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: accent.withValues(alpha: 0.08),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  tech,
+                                  style: GoogleFonts.jetBrainsMono(
+                                    fontSize: 11,
+                                    color: accent,
+                                  ),
                                 ),
                               ),
-                            ))
-                        .toList(),
+                            )
+                            .toList(),
                   ),
                 ],
 
@@ -704,6 +1023,13 @@ class _ProjectCardBack extends StatelessWidget {
     );
   }
 
+  List<String> _extractGalleryImages(Map<String, dynamic> project) {
+    if (project['gallery_images'] case final List<dynamic> images) {
+      return List<String>.from(images);
+    }
+    return [];
+  }
+
   List<String> _extractTechnologies(Map<String, dynamic> project) {
     if (project['technologies'] case final List<dynamic> techs) {
       return List<String>.from(techs);
@@ -712,46 +1038,13 @@ class _ProjectCardBack extends StatelessWidget {
   }
 
   String _extractUrl(Map<String, dynamic> project) => switch (project['url']) {
-        final String url => url,
-        final Map<String, dynamic> urls => [
-            for (final key in ['website', 'google_play', 'app_store'])
+    final String url => url,
+    final Map<String, dynamic> urls =>
+      [
+            for (final key in ['github', 'website', 'google_play', 'app_store'])
               if (urls[key] case final String url) url,
           ].firstOrNull ??
-            '',
-        _ => '',
-      };
-}
-
-// Compact case study section for the back face
-class _BackSection extends StatelessWidget {
-  const _BackSection({
-    required this.heading,
-    required this.body,
-    required this.accent,
-  });
-
-  final String heading;
-  final String body;
-  final Color accent;
-
-  @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            heading,
-            style: AppTypography.caption.copyWith(
-              color: accent,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            body,
-            style: AppTypography.bodySmall,
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      );
+          '',
+    _ => '',
+  };
 }

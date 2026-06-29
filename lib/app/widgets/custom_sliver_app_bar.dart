@@ -13,10 +13,7 @@ import 'package:flutter_web_portfolio/app/core/constants/cinematic_curves.dart';
 import 'package:flutter_web_portfolio/app/core/constants/durations.dart';
 import 'package:flutter_web_portfolio/app/widgets/cinematic_focusable.dart';
 import 'package:flutter_web_portfolio/app/widgets/fullscreen_menu.dart';
-import 'package:flutter_web_portfolio/app/widgets/language_switcher.dart';
 
-/// Minimal floating navigation — cinematic, no numbered sections.
-/// Shrinks from 80px to 60px as the user scrolls down (200px threshold).
 class CustomSliverAppBar extends StatefulWidget {
   const CustomSliverAppBar({
     super.key,
@@ -29,17 +26,11 @@ class CustomSliverAppBar extends StatefulWidget {
   final AppScrollController scrollController;
   final List<Widget>? actions;
 
-  /// Nav sections derived at build-time from active sections (excludes 'home').
   static List<String> navSections(LanguageController lc) =>
       lc.activeSections.where((s) => s != 'home').toList();
 
-  /// Maximum (expanded) toolbar height.
   static const _maxHeight = 80.0;
-
-  /// Minimum (collapsed) toolbar height.
   static const _minHeight = 60.0;
-
-  /// Scroll distance over which the bar shrinks.
   static const _shrinkScrollExtent = 200.0;
 
   @override
@@ -49,9 +40,7 @@ class CustomSliverAppBar extends StatefulWidget {
 class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
   double _toolbarHeight = CustomSliverAppBar._maxHeight;
 
-  /// Scale factor for logo and nav items: 1.0 at top, smaller when collapsed.
-  double get _scaleFactor =>
-      _toolbarHeight / CustomSliverAppBar._maxHeight;
+  double get _scaleFactor => _toolbarHeight / CustomSliverAppBar._maxHeight;
 
   @override
   void initState() {
@@ -69,13 +58,17 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
     final controller = widget.scrollController.scrollController;
     if (!controller.hasClients) return;
 
-    final offset = controller.offset.clamp(0.0, CustomSliverAppBar._shrinkScrollExtent);
+    final offset = controller.offset.clamp(
+      0.0,
+      CustomSliverAppBar._shrinkScrollExtent,
+    );
     final t = offset / CustomSliverAppBar._shrinkScrollExtent;
-    final newHeight = lerpDouble(
-      CustomSliverAppBar._maxHeight,
-      CustomSliverAppBar._minHeight,
-      t,
-    )!;
+    final newHeight =
+        lerpDouble(
+          CustomSliverAppBar._maxHeight,
+          CustomSliverAppBar._minHeight,
+          t,
+        )!;
 
     if ((newHeight - _toolbarHeight).abs() > 0.5) {
       setState(() => _toolbarHeight = newHeight);
@@ -86,6 +79,7 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isMobile = screenWidth < Breakpoints.tablet;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SliverAppBar(
       floating: false,
@@ -103,10 +97,16 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
                 filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.background.withValues(alpha: 0.75),
-                    border: const Border(
+                    color: (isDark
+                            ? AppColors.background
+                            : AppColorsLight.background)
+                        .withValues(alpha: 0.75),
+                    border: Border(
                       bottom: BorderSide(
-                        color: Color(0x0DFFFFFF),
+                        color:
+                            (isDark
+                                ? const Color(0x0DFFFFFF)
+                                : const Color(0x0D000000)),
                         width: 1,
                       ),
                     ),
@@ -123,19 +123,25 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
         scaleFactor: _scaleFactor,
         languageController: widget.languageController,
       ),
-      leading: isMobile
-          ? IconButton(
-              icon: Icon(
-                Icons.menu_rounded,
-                color: AppColors.textPrimary,
-                size: 24 * _scaleFactor,
-              ),
-              onPressed: () => FullscreenMenu.show(context),
-            )
-          : null,
+      leading:
+          isMobile
+              ? IconButton(
+                icon: Icon(
+                  Icons.menu_rounded,
+                  color:
+                      isDark
+                          ? AppColors.textPrimary
+                          : AppColorsLight.textPrimary,
+                  size: 24 * _scaleFactor,
+                ),
+                onPressed: () => FullscreenMenu.show(context),
+              )
+              : null,
       actions: [
         if (!isMobile) _buildNavItems(),
-        const LanguageSwitcher(),
+        // const ThemeToggleButton(),
+        const SizedBox(width: 8),
+        // const LanguageSwitcher(),
         ...?widget.actions,
         const SizedBox(width: 16),
       ],
@@ -161,14 +167,14 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
       ],
     );
   });
-
 }
 
-// ---------------------------------------------------------------------------
-// Logo: "YG" — Space Grotesk Bold, hover glow
-// ---------------------------------------------------------------------------
 class _LogoText extends StatefulWidget {
-  const _LogoText({required this.onTap, this.scaleFactor = 1.0, required this.languageController});
+  const _LogoText({
+    required this.onTap,
+    this.scaleFactor = 1.0,
+    required this.languageController,
+  });
   final VoidCallback onTap;
   final double scaleFactor;
   final LanguageController languageController;
@@ -182,7 +188,8 @@ class _LogoTextState extends State<_LogoText> {
 
   @override
   Widget build(BuildContext context) {
-    const baseColor = AppColors.textBright;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDark ? AppColors.textBright : AppColorsLight.textBright;
     const hoverColor = Colors.white;
 
     return Semantics(
@@ -200,14 +207,15 @@ class _LogoTextState extends State<_LogoText> {
               fontWeight: FontWeight.w700,
               color: _hovered ? hoverColor : baseColor,
               letterSpacing: 1,
-              shadows: _hovered
-                  ? [
-                      Shadow(
-                        color: hoverColor.withValues(alpha: 0.3),
-                        blurRadius: 12,
-                      ),
-                    ]
-                  : [],
+              shadows:
+                  _hovered
+                      ? [
+                        Shadow(
+                          color: hoverColor.withValues(alpha: 0.3),
+                          blurRadius: 12,
+                        ),
+                      ]
+                      : [],
             ),
           ),
         ),
@@ -216,9 +224,6 @@ class _LogoTextState extends State<_LogoText> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Nav item: uppercase, hover underline animation
-// ---------------------------------------------------------------------------
 class _NavItem extends StatefulWidget {
   const _NavItem({
     required this.label,
@@ -241,9 +246,12 @@ class _NavItemState extends State<_NavItem> {
 
   @override
   Widget build(BuildContext context) {
-    const activeColor = AppColors.textBright;
-    const inactiveColor = AppColors.textPrimary;
-    const underlineColor = Colors.white;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final activeColor =
+        isDark ? AppColors.textBright : AppColorsLight.textBright;
+    final inactiveColor =
+        isDark ? AppColors.textPrimary : AppColorsLight.textPrimary;
+    final underlineColor = isDark ? Colors.white : Colors.black;
 
     return Semantics(
       button: true,
@@ -260,15 +268,16 @@ class _NavItemState extends State<_NavItem> {
                 widget.label.toUpperCase(),
                 style: GoogleFonts.spaceGrotesk(
                   fontSize: 12 * widget.scaleFactor,
-                  fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.w400,
-                  color: widget.isActive
-                      ? activeColor
-                      : (_hovered ? activeColor : inactiveColor),
+                  fontWeight:
+                      widget.isActive ? FontWeight.w600 : FontWeight.w400,
+                  color:
+                      widget.isActive
+                          ? activeColor
+                          : (_hovered ? activeColor : inactiveColor),
                   letterSpacing: 2,
                 ),
               ),
               const SizedBox(height: 4),
-              // Underline — animates from left
               Align(
                 alignment: Alignment.centerLeft,
                 child: AnimatedContainer(
@@ -289,9 +298,6 @@ class _NavItemState extends State<_NavItem> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Scene-aware scroll progress bar (1px, gradient with scene accent)
-// ---------------------------------------------------------------------------
 class _SceneProgressBar extends StatefulWidget {
   const _SceneProgressBar({required this.scrollController});
   final AppScrollController scrollController;
@@ -329,33 +335,30 @@ class _SceneProgressBarState extends State<_SceneProgressBar> {
   Widget build(BuildContext context) => SizedBox(
     height: 1,
     child: LayoutBuilder(
-      builder: (context, constraints) => Obx(() {
-        final accent = Get.find<SceneDirector>().currentAccent.value;
-        return Stack(
-          children: [
-            AnimatedContainer(
-              duration: AppDurations.microFast,
-              width: constraints.maxWidth * _progress,
-              height: 1,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    accent.withValues(alpha: 0.2),
-                    accent,
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: accent.withValues(alpha: 0.3),
-                    blurRadius: 4,
+      builder:
+          (context, constraints) => Obx(() {
+            final accent = Get.find<SceneDirector>().currentAccent.value;
+            return Stack(
+              children: [
+                AnimatedContainer(
+                  duration: AppDurations.microFast,
+                  width: constraints.maxWidth * _progress,
+                  height: 1,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [accent.withValues(alpha: 0.2), accent],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: accent.withValues(alpha: 0.3),
+                        blurRadius: 4,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
-        );
-      }),
+                ),
+              ],
+            );
+          }),
     ),
   );
 }
-

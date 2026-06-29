@@ -85,8 +85,7 @@ class _HomeViewState extends State<HomeView> {
     if (_konamiBuffer.length > _konamiSequence.length) {
       _konamiBuffer.removeAt(0);
     }
-    if (_konamiBuffer.length == _konamiSequence.length &&
-        _isKonamiMatch()) {
+    if (_konamiBuffer.length == _konamiSequence.length && _isKonamiMatch()) {
       _konamiBuffer.clear();
       setState(() => _showMatrixRain = true);
       return KeyEventResult.handled;
@@ -125,8 +124,14 @@ class _HomeViewState extends State<HomeView> {
         final isDesktop = MediaQuery.sizeOf(context).width > Breakpoints.tablet;
 
         Widget scaffold = Scaffold(
-          backgroundColor: AppColors.background,
-          body: _buildBody(context, isDesktop, scrollController, languageController, active),
+          backgroundColor: AppColors.backgroundOf(context),
+          body: _buildBody(
+            context,
+            isDesktop,
+            scrollController,
+            languageController,
+            active,
+          ),
         );
 
         // Wrap with cinematic preloader (plays once per session)
@@ -152,201 +157,208 @@ class _HomeViewState extends State<HomeView> {
     AppScrollController scrollController,
     LanguageController languageController,
     List<String> active,
-  ) =>
-      Stack(
-            children: [
-              Positioned.fill(
-                child: RepaintBoundary(
-                  child: ListenableBuilder(
-                    listenable: scrollController.scrollController,
-                    builder: (_, child) {
-                      final offset = scrollController
-                              .scrollController.hasClients
-                          ? scrollController.scrollController.offset
-                          : 0.0;
-                      return Transform.translate(
-                        offset: Offset(0, -offset * 0.3),
-                        child: child,
-                      );
-                    },
-                    child: const CinematicBackground(),
-                  ),
-                ),
+  ) => Stack(
+    children: [
+    Positioned.fill(
+      child: RepaintBoundary(
+        child: ListenableBuilder(
+          listenable: scrollController.scrollController,
+          builder: (_, child) {
+            final offset = scrollController.scrollController.hasClients
+                ? scrollController.scrollController.offset
+                : 0.0;
+            return Transform.translate(
+              offset: Offset(0, -offset * 0.3),
+              child: child,
+            );
+          },
+          child: const CinematicBackground(),
+        ),
+      ),
+    ),
+      Positioned.fill(
+        child: RepaintBoundary(
+          child: ListenableBuilder(
+            listenable: scrollController.scrollController,
+            builder: (_, child) {
+              final offset =
+                  scrollController.scrollController.hasClients
+                      ? scrollController.scrollController.offset
+                      : 0.0;
+              return Transform.translate(
+                offset: Offset(0, -offset * 0.15),
+                child: child,
+              );
+            },
+            child: ConstellationParticles(
+              particleCount:
+                  MediaQuery.sizeOf(context).width < Breakpoints.mobile
+                      ? 15
+                      : 30,
+            ),
+          ),
+        ),
+      ),
+      // Skip-to-content link (accessibility)
+      Positioned(
+        top: 0,
+        left: 0,
+        right: 0,
+        child: _SkipToContentLink(
+          visible: _skipLinkVisible,
+          focusNode: _skipLinkFocusNode,
+          onFocusChanged: (focused) {
+            setState(() => _skipLinkVisible = focused);
+          },
+          onActivate: () {
+            scrollController.scrollToSection('about');
+          },
+        ),
+      ),
+      // Layer 3: Scrollable content
+      ValueListenableBuilder<bool>(
+        valueListenable: HomeSection.entranceComplete,
+        builder:
+            (context, entranceDone, child) => ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                  PointerDeviceKind.trackpad,
+                },
               ),
-              Positioned.fill(
-                child: RepaintBoundary(
-                  child: ListenableBuilder(
-                    listenable: scrollController.scrollController,
-                    builder: (_, child) {
-                      final offset = scrollController
-                              .scrollController.hasClients
-                          ? scrollController.scrollController.offset
-                          : 0.0;
-                      return Transform.translate(
-                        offset: Offset(0, -offset * 0.15),
-                        child: child,
-                      );
-                    },
-                    child: ConstellationParticles(
-                      particleCount: MediaQuery.sizeOf(context).width < Breakpoints.mobile ? 15 : 30,
-                    ),
-                  ),
-                ),
-              ),
-              // Skip-to-content link (accessibility)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: _SkipToContentLink(
-                  visible: _skipLinkVisible,
-                  focusNode: _skipLinkFocusNode,
-                  onFocusChanged: (focused) {
-                    setState(() => _skipLinkVisible = focused);
-                  },
-                  onActivate: () {
-                    scrollController.scrollToSection('about');
-                  },
-                ),
-              ),
-              // Layer 3: Scrollable content
-              ValueListenableBuilder<bool>(
-                valueListenable: HomeSection.entranceComplete,
-                builder: (context, entranceDone, child) =>
-                    ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.touch,
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.trackpad,
-                    },
-                  ),
-                  child: CustomScrollView(
-                    controller: scrollController.scrollController,
-                    physics: entranceDone
+              child: CustomScrollView(
+                controller: scrollController.scrollController,
+                physics:
+                    entranceDone
                         ? const BouncingScrollPhysics(
-                            decelerationRate: ScrollDecelerationRate.fast,
-                          )
+                          decelerationRate: ScrollDecelerationRate.fast,
+                        )
                         : const NeverScrollableScrollPhysics(),
-                    slivers: [
-                    CustomSliverAppBar(
-                      scrollController: scrollController,
-                      languageController: languageController,
-                    ),
+                slivers: [
+                  CustomSliverAppBar(
+                    scrollController: scrollController,
+                    languageController: languageController,
+                  ),
+                  _buildSection(
+                    scrollController.homeKey,
+                    const HomeSection(),
+                    context,
+                    animated: false,
+                  ),
+                  if (active.contains('about'))
                     _buildSection(
-                      scrollController.homeKey,
-                      const HomeSection(),
+                      scrollController.aboutKey,
+                      const AboutSection(),
                       context,
-                      animated: false,
+                      enableScale: true,
                     ),
-                    if (active.contains('about'))
-                      _buildSection(
-                        scrollController.aboutKey,
-                        const AboutSection(),
-                        context,
-                        enableScale: true,
-                      ),
-                    if (active.contains('experience'))
-                      _buildSection(
-                        scrollController.experienceKey,
-                        const ExperienceSection(),
-                        context,
-                        delay: AppDurations.staggerShort,
-                      ),
-                    if (active.contains('testimonials'))
-                      _buildSection(
-                        scrollController.testimonialsKey,
-                        const TestimonialsSection(),
-                        context,
-                        delay: AppDurations.staggerShort,
-                      ),
-                    if (active.contains('blog'))
-                      _buildSection(
-                        scrollController.blogKey,
-                        const BlogSection(),
-                        context,
-                        delay: AppDurations.staggerShort,
-                      ),
-                    if (active.contains('projects'))
-                      _buildSection(
-                        scrollController.projectsKey,
-                        const ProjectsSection(),
-                        context,
-                        delay: AppDurations.staggerShort,
-                        enableScale: true,
-                      ),
-                    if (active.contains('contact'))
-                      _buildSection(
-                        scrollController.contactKey,
-                        const ContactSection(),
-                        context,
-                        delay: AppDurations.staggerShort,
-                      ),
-                    const SliverToBoxAdapter(child: PremiumFooter()),
-                  ],
-                  ),
-                ),
-              ),
-              // Layer 4: Fixed social sidebars (desktop only)
-              ValueListenableBuilder<bool>(
-                valueListenable: HomeSection.entranceComplete,
-                builder: (context, entranceDone, _) => Positioned(
-                  left: AppDimensions.sidebarInset,
-                  bottom: 0,
-                  child: SocialSidebarLeft(visible: entranceDone),
-                ),
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: HomeSection.entranceComplete,
-                builder: (context, entranceDone, _) => Positioned(
-                  right: AppDimensions.sidebarInset,
-                  bottom: 0,
-                  child: SocialSidebarRight(visible: entranceDone),
-                ),
-              ),
-              // Layer 5: Scroll progress dots (desktop only)
-              ValueListenableBuilder<bool>(
-                valueListenable: HomeSection.entranceComplete,
-                builder: (context, entranceDone, _) => Positioned(
-                  right: AppDimensions.scrollDotsInset,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: ScrollProgressDots(visible: entranceDone),
-                  ),
-                ),
-              ),
-              // Layer 6: Back-to-top button with scroll progress
-              const PremiumBackToTopButton(),
-              // Layer 7: Sound toggle (bottom-left, desktop only)
-              if (isDesktop)
-                ValueListenableBuilder<bool>(
-                  valueListenable: HomeSection.entranceComplete,
-                  builder: (context, entranceDone, _) => Positioned(
-                    bottom: 24,
-                    left: 24,
-                    child: AnimatedOpacity(
-                      opacity: entranceDone ? 1.0 : 0.0,
-                      duration: AppDurations.medium,
-                      child: const SoundToggle(),
+                  if (active.contains('experience'))
+                    _buildSection(
+                      scrollController.experienceKey,
+                      const ExperienceSection(),
+                      context,
+                      delay: AppDurations.staggerShort,
                     ),
-                  ),
+                  if (active.contains('testimonials'))
+                    _buildSection(
+                      scrollController.testimonialsKey,
+                      const TestimonialsSection(),
+                      context,
+                      delay: AppDurations.staggerShort,
+                    ),
+                  if (active.contains('blog'))
+                    _buildSection(
+                      scrollController.blogKey,
+                      const BlogSection(),
+                      context,
+                      delay: AppDurations.staggerShort,
+                    ),
+                  if (active.contains('projects'))
+                    _buildSection(
+                      scrollController.projectsKey,
+                      const ProjectsSection(),
+                      context,
+                      delay: AppDurations.staggerShort,
+                      enableScale: true,
+                    ),
+                  if (active.contains('contact'))
+                    _buildSection(
+                      scrollController.contactKey,
+                      const ContactSection(),
+                      context,
+                      delay: AppDurations.staggerShort,
+                    ),
+                  const SliverToBoxAdapter(child: PremiumFooter()),
+                ],
+              ),
+            ),
+      ),
+      // Layer 4: Fixed social sidebars (desktop only)
+      ValueListenableBuilder<bool>(
+        valueListenable: HomeSection.entranceComplete,
+        builder:
+            (context, entranceDone, _) => Positioned(
+              left: AppDimensions.sidebarInset,
+              bottom: 0,
+              child: SocialSidebarLeft(visible: entranceDone),
+            ),
+      ),
+      ValueListenableBuilder<bool>(
+        valueListenable: HomeSection.entranceComplete,
+        builder:
+            (context, entranceDone, _) => Positioned(
+              right: AppDimensions.sidebarInset,
+              bottom: 0,
+              child: SocialSidebarRight(visible: entranceDone),
+            ),
+      ),
+      // Layer 5: Scroll progress dots (desktop only)
+      ValueListenableBuilder<bool>(
+        valueListenable: HomeSection.entranceComplete,
+        builder:
+            (context, entranceDone, _) => Positioned(
+              right: AppDimensions.scrollDotsInset,
+              top: 0,
+              bottom: 0,
+              child: Center(child: ScrollProgressDots(visible: entranceDone)),
+            ),
+      ),
+      // Layer 6: Back-to-top button with scroll progress
+      const PremiumBackToTopButton(),
+      // Layer 7: Sound toggle (bottom-left, desktop only)
+      if (isDesktop)
+        ValueListenableBuilder<bool>(
+          valueListenable: HomeSection.entranceComplete,
+          builder:
+              (context, entranceDone, _) => Positioned(
+                bottom: 24,
+                left: 24,
+                child: AnimatedOpacity(
+                  opacity: entranceDone ? 1.0 : 0.0,
+                  duration: AppDurations.medium,
+                  child: const SoundToggle(),
                 ),
-              // Layer 8: Matrix rain easter egg overlay
-              if (_showMatrixRain)
-                Positioned.fill(
-                  child: MatrixRain(
-                    onDismiss: () => setState(() => _showMatrixRain = false),
-                  ),
-                ),
-            ],
-    );
+              ),
+        ),
+      // Layer 8: Matrix rain easter egg overlay
+      if (_showMatrixRain)
+        Positioned.fill(
+          child: MatrixRain(
+            onDismiss: () => setState(() => _showMatrixRain = false),
+          ),
+        ),
+    ],
+  );
 
   EdgeInsets _sectionPadding(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    final horizontal = width > AppDimensions.maxContentWidth
-        ? AppDimensions.sectionPaddingDesktop
-        : (width > Breakpoints.tablet ? AppDimensions.sectionPaddingTablet : AppDimensions.sectionPaddingMobile);
+    final horizontal =
+        width > AppDimensions.maxContentWidth
+            ? AppDimensions.sectionPaddingDesktop
+            : (width > Breakpoints.tablet
+                ? AppDimensions.sectionPaddingTablet
+                : AppDimensions.sectionPaddingMobile);
     return EdgeInsets.symmetric(vertical: 80, horizontal: horizontal);
   }
 
@@ -361,13 +373,14 @@ class _HomeViewState extends State<HomeView> {
     child: Container(
       key: key,
       padding: _sectionPadding(context),
-      child: animated
-          ? ScrollFadeIn(
-              delay: delay,
-              enableScale: enableScale,
-              child: child,
-            )
-          : child,
+      child:
+          animated
+              ? ScrollFadeIn(
+                delay: delay,
+                enableScale: enableScale,
+                child: child,
+              )
+              : child,
     ),
   );
 }
@@ -409,11 +422,7 @@ class _SkipToContentLink extends StatelessWidget {
         duration: AppDurations.fast,
         child: AnimatedContainer(
           duration: AppDurations.fast,
-          transform: Matrix4.translationValues(
-            0,
-            visible ? 0 : -48,
-            0,
-          ),
+          transform: Matrix4.translationValues(0, visible ? 0 : -48, 0),
           child: Center(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

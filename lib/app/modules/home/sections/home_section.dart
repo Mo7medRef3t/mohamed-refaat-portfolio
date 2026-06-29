@@ -135,137 +135,163 @@ class _HomeSectionState extends State<HomeSection>
         }
       },
       child: SizedBox(
-      width: double.infinity,
-      height: screenHeight - appBarHeight,
-      child: AnimatedBuilder(
-        animation: _entranceCtrl,
-        builder: (context, _) => Stack(
-          children: [
-            // Main content
-            Opacity(
-              opacity: _contentOpacity.value,
-              child: MouseRegion(
-                onHover: (e) {
-                  final box = context.findRenderObject() as RenderBox?;
-                  if (box == null) return;
-                  setState(() {
-                    _heroMousePos = Offset(
-                      e.localPosition.dx / box.size.width,
-                      e.localPosition.dy / box.size.height,
-                    );
-                  });
-                },
-                onExit: (_) => setState(
-                  () => _heroMousePos = const Offset(0.5, 0.5),
-                ),
-                child: AnimatedContainer(
-                  duration: AppDurations.medium,
-                  transform: _buildHeroTransform(screenWidth),
-                  transformAlignment: Alignment.center,
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth > AppDimensions.maxContentWidth
-                            ? AppDimensions.sectionPaddingDesktop
-                            : (screenWidth > Breakpoints.tablet
-                                ? AppDimensions.sectionPaddingTablet
-                                : AppDimensions.sectionPaddingMobile),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Name — gradient overlay fades in after reveal
-                          _HeroNameWithGradient(
-                            languageController: languageController,
-                            heroFontSize: heroFontSize,
+        width: double.infinity,
+        height: screenHeight - appBarHeight,
+        child: AnimatedBuilder(
+          animation: _entranceCtrl,
+          builder:
+              (context, _) => Stack(
+                children: [
+                  // Main content
+                  Opacity(
+                    opacity: _contentOpacity.value,
+                    child: MouseRegion(
+                      onHover: (e) {
+                        final box = context.findRenderObject() as RenderBox?;
+                        if (box == null) return;
+                        setState(() {
+                          _heroMousePos = Offset(
+                            e.localPosition.dx / box.size.width,
+                            e.localPosition.dy / box.size.height,
+                          );
+                        });
+                      },
+                      onExit:
+                          (_) => setState(
+                            () => _heroMousePos = const Offset(0.5, 0.5),
                           ),
+                      child: AnimatedContainer(
+                        duration: AppDurations.medium,
+                        transform: _buildHeroTransform(screenWidth),
+                        transformAlignment: Alignment.center,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  screenWidth > AppDimensions.maxContentWidth
+                                      ? AppDimensions.sectionPaddingDesktop
+                                      : (screenWidth > Breakpoints.tablet
+                                          ? AppDimensions.sectionPaddingTablet
+                                          : AppDimensions.sectionPaddingMobile),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Name — gradient overlay fades in after reveal
+                                _HeroNameWithGradient(
+                                  languageController: languageController,
+                                  heroFontSize: heroFontSize,
+                                ),
 
-                          // Horizontal line between name and subtitle
-                          const SizedBox(height: 20),
-                          Builder(builder: (context) {
-                            const lineColor = Colors.white;
-                            return Container(
-                              height: 1.5,
-                              width: (screenWidth * 0.4).clamp(100, 600).toDouble() * _lineWidth.value,
-                              decoration: BoxDecoration(
-                                color: lineColor.withValues(alpha: 0.4),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: lineColor.withValues(alpha: 0.15),
-                                    blurRadius: 6,
+                                // Horizontal line between name and subtitle
+                                const SizedBox(height: 20),
+                                Builder(
+                                  builder: (context) {
+                                    final lineColor =
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black;
+                                    return Container(
+                                      height: 1.5,
+                                      width:
+                                          (screenWidth * 0.4)
+                                              .clamp(100, 600)
+                                              .toDouble() *
+                                          _lineWidth.value,
+                                      decoration: BoxDecoration(
+                                        color: lineColor.withValues(alpha: 0.4),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: lineColor.withValues(
+                                              alpha: 0.15,
+                                            ),
+                                            blurRadius: 6,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+
+                                // Subtitle — typewriter cycling effect
+                                TypewriterText(
+                                  text: languageController.getText(
+                                    'home_section.subtitle',
+                                    defaultValue: 'Mobile Software Engineer',
                                   ),
-                                ],
-                              ),
-                            );
-                          }),
-                          const SizedBox(height: 20),
+                                  texts: _subtitleTexts(languageController),
+                                  loop: true,
+                                  style: GoogleFonts.spaceGrotesk(
+                                    fontSize: (heroFontSize * 0.35).clamp(
+                                      18.0,
+                                      42.0,
+                                    ),
+                                    fontWeight: FontWeight.w400,
+                                    color:
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? AppColors.textPrimary
+                                            : AppColorsLight.textPrimary,
+                                    letterSpacing: 2,
+                                    height: 1.3,
+                                  ),
+                                  delay: AppDurations.heroSubtitleDelay,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 8),
 
-                          // Subtitle — typewriter cycling effect
-                          TypewriterText(
-                            text: languageController.getText(
-                              'home_section.subtitle',
-                              defaultValue: 'Mobile Software Engineer',
-                            ),
-                            texts: _subtitleTexts(languageController),
-                            loop: true,
-                            style: GoogleFonts.spaceGrotesk(
-                              fontSize: (heroFontSize * 0.35).clamp(18.0, 42.0),
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textPrimary,
-                              letterSpacing: 2,
-                              height: 1.3,
-                            ),
-                            delay: AppDurations.heroSubtitleDelay,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
+                                // Location — monospace
+                                ShaderTextReveal(
+                                  text: languageController.getText(
+                                    'cv_data.personal_info.location',
+                                    defaultValue: 'Alexandria, Egypt',
+                                  ),
+                                  style: GoogleFonts.jetBrainsMono(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color:
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? AppColors.textSecondary
+                                            : AppColorsLight.textSecondary,
+                                    letterSpacing: 3,
+                                  ),
+                                  delay: AppDurations.heroLocationDelay,
+                                  duration: AppDurations.heroLocationDuration,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 56),
 
-                          // Location — monospace
-                          ShaderTextReveal(
-                            text: languageController.getText(
-                              'cv_data.personal_info.location',
-                              defaultValue: 'Antalya, Türkiye',
+                                // CTA buttons — pixel assembly effect
+                                _AnimatedCTAButtons(
+                                  delay: AppDurations.heroCTADelay,
+                                  languageController: languageController,
+                                ),
+                              ],
                             ),
-                            style: GoogleFonts.jetBrainsMono(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textSecondary,
-                              letterSpacing: 3,
-                            ),
-                            delay: AppDurations.heroLocationDelay,
-                            duration: AppDurations.heroLocationDuration,
-                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 56),
-
-                          // CTA buttons — pixel assembly effect
-                          _AnimatedCTAButtons(
-                            delay: AppDurations.heroCTADelay,
-                            languageController: languageController,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
 
-            // Scroll indicator at bottom
-            if (_contentOpacity.value > 0.5)
-              const Positioned(
-                bottom: 32,
-                left: 0,
-                right: 0,
-                child: ScrollIndicator(
-                  delay: AppDurations.heroScrollIndicator,
-                ),
+                  // Scroll indicator at bottom
+                  if (_contentOpacity.value > 0.5)
+                    const Positioned(
+                      bottom: 32,
+                      left: 0,
+                      right: 0,
+                      child: ScrollIndicator(
+                        delay: AppDurations.heroScrollIndicator,
+                      ),
+                    ),
+                ],
               ),
-          ],
         ),
       ),
-    ),
     );
   }
 }
@@ -293,11 +319,11 @@ class _AnimatedCTAButtonsState extends State<_AnimatedCTAButtons>
   @override
   void initState() {
     super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: AppDurations.entrance,
+    _ctrl = AnimationController(vsync: this, duration: AppDurations.entrance);
+    _opacity = CurvedAnimation(
+      parent: _ctrl,
+      curve: CinematicCurves.revealDecel,
     );
-    _opacity = CurvedAnimation(parent: _ctrl, curve: CinematicCurves.revealDecel);
     Future.delayed(widget.delay, () {
       if (mounted) _ctrl.forward();
     });
@@ -312,50 +338,59 @@ class _AnimatedCTAButtonsState extends State<_AnimatedCTAButtons>
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: _opacity,
-    builder: (_, __) => Opacity(
-      opacity: _opacity.value,
-      child: Transform.translate(
-        offset: Offset(0, 10 * (1 - _opacity.value)),
-        child: Obx(() {
-          // Touch reactive translations so the button labels rebuild on
-          // language change. Without this, Wrap caches the original labels.
-          final viewWorkLabel = widget.languageController.getText(
-            'home_section.view_work',
-            defaultValue: 'View My Work',
-          );
-          final downloadCvLabel = widget.languageController.getText(
-            'home_section.download_cv',
-            defaultValue: 'Download CV',
-          );
-          return Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 20,
-          runSpacing: 16,
-          children: [
-            CinematicButton(
-              label: viewWorkLabel,
-              isPrimary: true,
-              onTap: () => Get.find<AppScrollController>()
-                  .scrollToSection('projects'),
-            ),
-            CinematicButton(
-              label: downloadCvLabel,
-              onTap: () async {
-                final origin = Uri.base.origin;
-                final basePath = Uri.base.path.endsWith('/')
-                    ? Uri.base.path
-                    : '${Uri.base.path}/';
-                final uri = Uri.parse('$origin${basePath}assets/data/cv.pdf');
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri, mode: LaunchMode.externalApplication);
-                }
-              },
-            ),
-          ],
-          );
-        }),
-      ),
-    ),
+    builder:
+        (_, __) => Opacity(
+          opacity: _opacity.value,
+          child: Transform.translate(
+            offset: Offset(0, 10 * (1 - _opacity.value)),
+            child: Obx(() {
+              // Touch reactive translations so the button labels rebuild on
+              // language change. Without this, Wrap caches the original labels.
+              final viewWorkLabel = widget.languageController.getText(
+                'home_section.view_work',
+                defaultValue: 'View My Work',
+              );
+              final downloadCvLabel = widget.languageController.getText(
+                'home_section.download_cv',
+                defaultValue: 'Download CV',
+              );
+              return Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 20,
+                runSpacing: 16,
+                children: [
+                  CinematicButton(
+                    label: viewWorkLabel,
+                    isPrimary: true,
+                    onTap:
+                        () => Get.find<AppScrollController>().scrollToSection(
+                          'projects',
+                        ),
+                  ),
+                  CinematicButton(
+                    label: downloadCvLabel,
+                    onTap: () async {
+                      final origin = Uri.base.origin;
+                      final basePath =
+                          Uri.base.path.endsWith('/')
+                              ? Uri.base.path
+                              : '${Uri.base.path}/';
+                      final uri = Uri.parse(
+                        '$origin${basePath}assets/data/cv.pdf',
+                      );
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(
+                          uri,
+                          mode: LaunchMode.externalApplication,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              );
+            }),
+          ),
+        ),
   );
 }
 
@@ -375,10 +410,10 @@ class _HeroNameWithGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameText = languageController.getText(
-      'home_section.title',
-      defaultValue: 'YUSUF IHSAN GORGEL',
-    ).toUpperCase();
+    final nameText =
+        languageController
+            .getText('home_section.title', defaultValue: 'YUSUF IHSAN GORGEL')
+            .toUpperCase();
 
     final nameStyle = GoogleFonts.spaceGrotesk(
       fontSize: heroFontSize,
@@ -414,16 +449,13 @@ class _HeroNameWithGradient extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: ShaderMask(
                   blendMode: BlendMode.srcIn,
-                  shaderCallback: (bounds) => LinearGradient(
-                    colors: [
-                      AppColors.textBright,
-                      Color.lerp(
-                        AppColors.textBright,
-                        accent,
-                        0.20,
-                      )!,
-                    ],
-                  ).createShader(bounds),
+                  shaderCallback:
+                      (bounds) => LinearGradient(
+                        colors: [
+                          AppColors.textBright,
+                          Color.lerp(AppColors.textBright, accent, 0.20)!,
+                        ],
+                      ).createShader(bounds),
                   child: Text(
                     nameText,
                     style: nameStyle,

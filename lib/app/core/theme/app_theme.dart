@@ -48,4 +48,47 @@ final class AppTheme {
       textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
     );
   }
+
+  static ThemeData get light {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: AppColorsLight.accent,
+      brightness: Brightness.light,
+      secondary: AppColorsLight.accent,
+      surface: AppColorsLight.backgroundLight,
+      onSurface: AppColorsLight.textBright,
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: colorScheme,
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: AppColorsLight.background,
+      appBarTheme: const AppBarTheme(
+        elevation: 0,
+        backgroundColor: AppColorsLight.background,
+        foregroundColor: AppColorsLight.textBright,
+      ),
+      cardTheme: CardThemeData(
+        elevation: 0,
+        color: AppColorsLight.backgroundLight,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: AppColorsLight.accent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+            side: const BorderSide(color: AppColorsLight.accent, width: 1),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: AppColorsLight.accent),
+      ),
+      textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme),
+    );
+  }
 }

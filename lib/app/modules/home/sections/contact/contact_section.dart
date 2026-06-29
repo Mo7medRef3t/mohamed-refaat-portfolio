@@ -26,7 +26,9 @@ class ContactSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final languageController = Get.find<LanguageController>();
-    final data = languageController.cvData['personal_info'] as Map<String, dynamic>? ?? <String, dynamic>{};
+    final data =
+        languageController.cvData['personal_info'] as Map<String, dynamic>? ??
+        <String, dynamic>{};
     final email = (data['email'] as String?) ?? 'hello@example.com';
     final screenWidth = MediaQuery.sizeOf(context).width;
 
@@ -43,23 +45,27 @@ class ContactSection extends StatelessWidget {
             left: 0,
             right: 0,
             child: Center(
-              child: Obx(() => Text(
-                languageController.getText('nav.contact', defaultValue: 'Contact').toUpperCase(),
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: ResponsiveUtils.getValueForScreenType<double>(
-                    context: context,
-                    mobile: 48.0,
-                    tablet: screenWidth * 0.14,
-                    desktop: screenWidth * 0.18,
+              child: Obx(
+                () => Text(
+                  languageController
+                      .getText('nav.contact', defaultValue: 'Contact')
+                      .toUpperCase(),
+                  style: GoogleFonts.spaceGrotesk(
+                    fontSize: ResponsiveUtils.getValueForScreenType<double>(
+                      context: context,
+                      mobile: 48.0,
+                      tablet: screenWidth * 0.14,
+                      desktop: screenWidth * 0.18,
+                    ),
+                    fontWeight: FontWeight.w800,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black)
+                        .withValues(alpha: 0.03),
+                    letterSpacing: -2,
                   ),
-                  fontWeight: FontWeight.w800,
-                  color: (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black)
-                      .withValues(alpha: 0.03),
-                  letterSpacing: -2,
                 ),
-              )),
+              ),
             ),
           ),
           Center(
@@ -74,7 +80,8 @@ class ContactSection extends StatelessWidget {
                     // Title
                     ScrollFadeIn(
                       child: Obx(() {
-                        final accent = Get.find<SceneDirector>().currentAccent.value;
+                        final accent =
+                            Get.find<SceneDirector>().currentAccent.value;
                         return NumberedSectionHeading(
                           number: '06',
                           title: languageController.getText(
@@ -92,7 +99,8 @@ class ContactSection extends StatelessWidget {
                       child: Text(
                         languageController.getText(
                           'contact_section.description',
-                          defaultValue: 'I\'m always open to new challenges and '
+                          defaultValue:
+                              'I\'m always open to new challenges and '
                               'collaborations. Whether you have a project idea, '
                               'a question, or just want to connect — feel free '
                               'to reach out!',
@@ -111,32 +119,44 @@ class ContactSection extends StatelessWidget {
                     // "or" divider
                     ScrollFadeIn(
                       delay: AppDurations.staggerLong,
-                      child: Obx(() => Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 1,
-                              color: Colors.white.withValues(alpha: 0.08),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              languageController.getText(
-                                'contact_section.form.or_divider',
-                                defaultValue: 'or send a message directly',
+                      child: Obx(
+                        () => Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 1,
+                                color: (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black)
+                                    .withValues(alpha: 0.08),
                               ),
-                              style: AppTypography.caption,
                             ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 1,
-                              color: Colors.white.withValues(alpha: 0.08),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: Text(
+                                languageController.getText(
+                                  'contact_section.form.or_divider',
+                                  defaultValue: 'or send a message directly',
+                                ),
+                                style: AppTypography.caption,
+                              ),
                             ),
-                          ),
-                        ],
-                      )),
+                            Expanded(
+                              child: Container(
+                                height: 1,
+                                color: (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black)
+                                    .withValues(alpha: 0.08),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 40),
                     // Contact Form
@@ -178,10 +198,7 @@ class _MagneticCTA extends StatelessWidget {
             await launchUrl(uri);
           }
         },
-          child: _HoverContainer(
-          accent: accent,
-          label: label,
-        ),
+        child: _HoverContainer(accent: accent, label: label),
       ),
     );
   });
@@ -207,23 +224,24 @@ class _HoverContainerState extends State<_HoverContainer> {
       duration: AppDurations.buttonHover,
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       decoration: BoxDecoration(
-        color: _hovered
-            ? widget.accent.withValues(alpha: 0.08)
-            : Colors.transparent,
+        color:
+            _hovered
+                ? widget.accent.withValues(alpha: 0.08)
+                : Colors.transparent,
         border: Border.all(
-          color: _hovered
-              ? widget.accent
-              : widget.accent.withValues(alpha: 0.4),
+          color:
+              _hovered ? widget.accent : widget.accent.withValues(alpha: 0.4),
           width: 1,
         ),
-        boxShadow: _hovered
-            ? [
-                BoxShadow(
-                  color: widget.accent.withValues(alpha: 0.15),
-                  blurRadius: 20,
-                ),
-              ]
-            : [],
+        boxShadow:
+            _hovered
+                ? [
+                  BoxShadow(
+                    color: widget.accent.withValues(alpha: 0.15),
+                    blurRadius: 20,
+                  ),
+                ]
+                : [],
       ),
       child: Text(
         widget.label,
@@ -270,21 +288,25 @@ class _ContactFormState extends State<_ContactForm> {
 
     try {
       final languageController = Get.find<LanguageController>();
-      final formspreeId = languageController.cvData['contact']?['formspree_id'] as String? ?? '';
+      final formspreeId =
+          languageController.cvData['contact']?['formspree_id'] as String? ??
+          '';
       final formspreeEndpoint = 'https://formspree.io/f/$formspreeId';
 
-      final response = await http.post(
-        Uri.parse(formspreeEndpoint),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({
-          'name': _nameController.text.trim(),
-          'email': _emailController.text.trim(),
-          'message': _messageController.text.trim(),
-        }),
-      ).timeout(const Duration(seconds: 15));
+      final response = await http
+          .post(
+            Uri.parse(formspreeEndpoint),
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: jsonEncode({
+              'name': _nameController.text.trim(),
+              'email': _emailController.text.trim(),
+              'message': _messageController.text.trim(),
+            }),
+          )
+          .timeout(const Duration(seconds: 15));
 
       if (!mounted) return;
 
@@ -406,8 +428,11 @@ class _ContactFormState extends State<_ContactForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.check_circle_outline,
-                          color: AppColors.expAccent, size: 18),
+                      const Icon(
+                        Icons.check_circle_outline,
+                        color: AppColors.expAccent,
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       Flexible(
                         child: Text(
@@ -416,8 +441,9 @@ class _ContactFormState extends State<_ContactForm> {
                             defaultValue:
                                 'Your message has been sent successfully!',
                           ),
-                          style: AppTypography.bodySmall
-                              .copyWith(color: AppColors.expAccent),
+                          style: AppTypography.bodySmall.copyWith(
+                            color: AppColors.expAccent,
+                          ),
                         ),
                       ),
                     ],
@@ -429,8 +455,11 @@ class _ContactFormState extends State<_ContactForm> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.error_outline,
-                          color: AppColors.projAccent, size: 18),
+                      const Icon(
+                        Icons.error_outline,
+                        color: AppColors.projAccent,
+                        size: 18,
+                      ),
                       const SizedBox(width: 8),
                       Flexible(
                         child: Text(
@@ -439,8 +468,9 @@ class _ContactFormState extends State<_ContactForm> {
                             defaultValue:
                                 'An error occurred. Please try again.',
                           ),
-                          style: AppTypography.bodySmall
-                              .copyWith(color: AppColors.projAccent),
+                          style: AppTypography.bodySmall.copyWith(
+                            color: AppColors.projAccent,
+                          ),
                         ),
                       ),
                     ],
@@ -500,23 +530,32 @@ class _CinematicTextFieldState extends State<_CinematicTextField> {
       duration: AppDurations.buttonHover,
       curve: CinematicCurves.hoverLift,
       decoration: BoxDecoration(
-        color: _focused
-            ? widget.accent.withValues(alpha: 0.04)
-            : AppColors.backgroundLight.withValues(alpha: 0.3),
+        color:
+            _focused
+                ? widget.accent.withValues(alpha: 0.04)
+                : (Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.backgroundLight
+                        : AppColorsLight.backgroundLight)
+                    .withValues(alpha: 0.3),
         border: Border.all(
-          color: _focused
-              ? widget.accent.withValues(alpha: 0.6)
-              : Colors.white.withValues(alpha: 0.08),
+          color:
+              _focused
+                  ? widget.accent.withValues(alpha: 0.6)
+                  : (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black)
+                      .withValues(alpha: 0.08),
           width: 1,
         ),
-        boxShadow: _focused
-            ? [
-                BoxShadow(
-                  color: widget.accent.withValues(alpha: 0.08),
-                  blurRadius: 20,
-                ),
-              ]
-            : [],
+        boxShadow:
+            _focused
+                ? [
+                  BoxShadow(
+                    color: widget.accent.withValues(alpha: 0.08),
+                    blurRadius: 20,
+                  ),
+                ]
+                : [],
       ),
       child: TextFormField(
         controller: widget.controller,
@@ -529,9 +568,7 @@ class _CinematicTextFieldState extends State<_CinematicTextField> {
         decoration: InputDecoration(
           labelText: widget.label,
           labelStyle: AppTypography.bodySmall.copyWith(
-            color: _focused
-                ? widget.accent
-                : AppColors.textSecondary,
+            color: _focused ? widget.accent : AppColors.textSecondary,
           ),
           floatingLabelStyle: AppTypography.caption.copyWith(
             color: widget.accent,
@@ -577,9 +614,10 @@ class _SubmitButtonState extends State<_SubmitButton> {
   Widget build(BuildContext context) => MouseRegion(
     onEnter: (_) => setState(() => _hovered = true),
     onExit: (_) => setState(() => _hovered = false),
-    cursor: widget.isSending
-        ? SystemMouseCursors.forbidden
-        : SystemMouseCursors.click,
+    cursor:
+        widget.isSending
+            ? SystemMouseCursors.forbidden
+            : SystemMouseCursors.click,
     child: GestureDetector(
       onTap: widget.onTap,
       child: AnimatedContainer(
@@ -587,45 +625,49 @@ class _SubmitButtonState extends State<_SubmitButton> {
         curve: CinematicCurves.hoverLift,
         padding: const EdgeInsets.symmetric(vertical: 18),
         decoration: BoxDecoration(
-          color: widget.isSending
-              ? widget.accent.withValues(alpha: 0.05)
-              : _hovered
+          color:
+              widget.isSending
+                  ? widget.accent.withValues(alpha: 0.05)
+                  : _hovered
                   ? widget.accent.withValues(alpha: 0.12)
                   : widget.accent.withValues(alpha: 0.06),
           border: Border.all(
-            color: _hovered && !widget.isSending
-                ? widget.accent.withValues(alpha: 0.8)
-                : widget.accent.withValues(alpha: 0.3),
+            color:
+                _hovered && !widget.isSending
+                    ? widget.accent.withValues(alpha: 0.8)
+                    : widget.accent.withValues(alpha: 0.3),
             width: 1,
           ),
-          boxShadow: _hovered && !widget.isSending
-              ? [
-                  BoxShadow(
-                    color: widget.accent.withValues(alpha: 0.12),
-                    blurRadius: 20,
-                  ),
-                ]
-              : [],
+          boxShadow:
+              _hovered && !widget.isSending
+                  ? [
+                    BoxShadow(
+                      color: widget.accent.withValues(alpha: 0.12),
+                      blurRadius: 20,
+                    ),
+                  ]
+                  : [],
         ),
         alignment: Alignment.center,
-        child: widget.isSending
-            ? SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation(widget.accent),
+        child:
+            widget.isSending
+                ? SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation(widget.accent),
+                  ),
+                )
+                : Text(
+                  widget.label,
+                  style: GoogleFonts.spaceGrotesk(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: widget.accent,
+                    letterSpacing: 1.5,
+                  ),
                 ),
-              )
-            : Text(
-                widget.label,
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: widget.accent,
-                  letterSpacing: 1.5,
-                ),
-              ),
       ),
     ),
   );

@@ -26,8 +26,7 @@ class TestimonialsSection extends StatelessWidget {
     final languageController = Get.find<LanguageController>();
     final screenWidth = MediaQuery.sizeOf(context).width;
     return Obx(() {
-      final raw =
-          languageController.cvData['testimonials'] as List? ?? [];
+      final raw = languageController.cvData['testimonials'] as List? ?? [];
       final testimonials = raw.cast<Map<String, dynamic>>();
       if (testimonials.isEmpty) return const SizedBox.shrink();
 
@@ -39,22 +38,30 @@ class TestimonialsSection extends StatelessWidget {
               Positioned(
                 top: -20,
                 left: -10,
-                child: Obx(() => Text(
-                  languageController
-                      .getText('nav.testimonials', defaultValue: 'Testimonials')
-                      .toUpperCase(),
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: ResponsiveUtils.getValueForScreenType<double>(
-                      context: context,
-                      mobile: 36.0,
-                      tablet: screenWidth * 0.10,
-                      desktop: screenWidth * 0.12,
+                child: Obx(
+                  () => Text(
+                    languageController
+                        .getText(
+                          'nav.testimonials',
+                          defaultValue: 'Testimonials',
+                        )
+                        .toUpperCase(),
+                    style: GoogleFonts.spaceGrotesk(
+                      fontSize: ResponsiveUtils.getValueForScreenType<double>(
+                        context: context,
+                        mobile: 36.0,
+                        tablet: screenWidth * 0.10,
+                        desktop: screenWidth * 0.12,
+                      ),
+                      fontWeight: FontWeight.w800,
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black)
+                          .withValues(alpha: 0.03),
+                      letterSpacing: -3,
                     ),
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white.withValues(alpha: 0.03),
-                    letterSpacing: -3,
                   ),
-                )),
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,13 +94,15 @@ class TestimonialsSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  Builder(builder: (context) {
-                    final isDesktop = screenWidth >= Breakpoints.tablet;
-                    if (isDesktop) {
-                      return _TestimonialsGrid(testimonials: testimonials);
-                    }
-                    return _TestimonialsCarousel(testimonials: testimonials);
-                  }),
+                  Builder(
+                    builder: (context) {
+                      final isDesktop = screenWidth >= Breakpoints.tablet;
+                      if (isDesktop) {
+                        return _TestimonialsGrid(testimonials: testimonials);
+                      }
+                      return _TestimonialsCarousel(testimonials: testimonials);
+                    },
+                  ),
                 ],
               ),
             ],
@@ -115,9 +124,10 @@ class _TestimonialsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final crossAxisCount = screenWidth >= Breakpoints.tablet
-        ? 3
-        : (screenWidth >= Breakpoints.mobile ? 2 : 1);
+    final crossAxisCount =
+        screenWidth >= Breakpoints.tablet
+            ? 3
+            : (screenWidth >= Breakpoints.mobile ? 2 : 1);
 
     return GridView.builder(
       shrinkWrap: true,
@@ -129,9 +139,9 @@ class _TestimonialsGrid extends StatelessWidget {
         childAspectRatio: crossAxisCount == 1 ? 1.8 : 0.85,
       ),
       itemCount: testimonials.length,
-      itemBuilder: (context, index) => _TestimonialCard(
-        testimonial: testimonials[index],
-      ),
+      itemBuilder:
+          (context, index) =>
+              _TestimonialCard(testimonial: testimonials[index]),
     );
   }
 }
@@ -217,12 +227,13 @@ class _TestimonialsCarouselState extends State<_TestimonialsCarousel> {
                 controller: _pageController,
                 onPageChanged: _onPageChanged,
                 itemCount: count,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: _TestimonialCard(
-                    testimonial: widget.testimonials[index],
-                  ),
-                ),
+                itemBuilder:
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: _TestimonialCard(
+                        testimonial: widget.testimonials[index],
+                      ),
+                    ),
               ),
             ),
           ),
@@ -241,9 +252,10 @@ class _TestimonialsCarouselState extends State<_TestimonialsCarousel> {
                   margin: const EdgeInsets.symmetric(horizontal: 3),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(2),
-                    color: i == _currentPage
-                        ? accent
-                        : AppColors.textSecondary.withValues(alpha: 0.3),
+                    color:
+                        i == _currentPage
+                            ? accent
+                            : AppColors.textSecondary.withValues(alpha: 0.3),
                   ),
                 ),
               ),
@@ -291,7 +303,7 @@ class _TestimonialCard extends StatelessWidget {
                 quote,
                 style: AppTypography.bodySmall.copyWith(
                   fontStyle: FontStyle.italic,
-                  color: AppColors.textPrimary,
+                  color: AppColors.textPrimaryOf(context),
                   height: 1.6,
                 ),
                 maxLines: 6,

@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:flutter_web_portfolio/app/bindings/app_bindings.dart';
 import 'package:flutter_web_portfolio/app/controllers/loading_controller.dart';
 import 'package:flutter_web_portfolio/app/controllers/language_controller.dart';
+import 'package:flutter_web_portfolio/app/controllers/theme_controller.dart';
 import 'package:flutter_web_portfolio/app/core/constants/app_colors.dart';
 import 'package:flutter_web_portfolio/app/core/theme/app_theme.dart';
 import 'package:flutter_web_portfolio/app/routes/app_pages.dart';
@@ -23,8 +24,6 @@ void main() {
   runZonedGuarded(
     () {
       WidgetsFlutterBinding.ensureInitialized();
-      // Force the semantics tree to stay populated — screen readers and
-      // Playwright semantics snapshots both rely on this on Flutter Web.
       SemanticsBinding.instance.ensureSemantics();
 
       FlutterError.onError = (FlutterErrorDetails details) {
@@ -37,6 +36,7 @@ void main() {
       AppBindings().dependencies();
 
       final loadingController = Get.put(LoadingController(), permanent: true);
+      Get.put(ThemeController(), permanent: true);
 
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
@@ -58,7 +58,6 @@ void main() {
 
 void _printConsoleAsciiArt() {
   if (kIsWeb) {
-    // Intentional console art for visitors inspecting DevTools.
     // ignore: avoid_print
     print('''
 
@@ -67,7 +66,7 @@ void _printConsoleAsciiArt() {
  ║   Built with Clean Architecture
  ║   ─────────────────────────── ║
  ║   Psst... try Ctrl+K         ║
- ╚═══════════════════════════════╝
+ ═══════════════════════════════╝
 
 ''');
   }
@@ -84,24 +83,32 @@ Future<void> initializeApp(LoadingController loadingController) async {
   }
 }
 
-/// Root application widget.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     final loadingController = Get.find<LoadingController>();
+    final themeController = Get.find<ThemeController>();
 
     return Obx(() {
       var currentLocale = const Locale('en');
-      var appTitle = 'Portfolio';
+      var appTitle = 'Mohamed Refaat - Mobile Software Engineer';
       var textDirection = TextDirection.ltr;
 
       if (Get.isRegistered<LanguageController>()) {
         final languageController = Get.find<LanguageController>();
         currentLocale = languageController.currentLocale;
-        appTitle = languageController.appName;
-        // Arabic is RTL
+
+        // Get name from CV data if available
+        final personalInfo =
+            languageController.cvData['personal_info'] as Map<String, dynamic>?;
+        final name = personalInfo?['name'] as String?;
+        final title = personalInfo?['title'] as String?;
+        if (name != null && title != null) {
+          appTitle = '$name - $title';
+        }
+
         if (languageController.currentLanguage == 'ar') {
           textDirection = TextDirection.rtl;
         }
@@ -110,9 +117,10 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         title: appTitle,
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.dark,
+        theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.dark,
+        themeMode:
+            themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
         transitionDuration: const Duration(milliseconds: 400),
         locale: currentLocale,
         fallbackLocale: const Locale('en'),
@@ -146,15 +154,16 @@ class MyApp extends StatelessWidget {
           final wrappedApp = FlutterI18n.rootAppBuilder()(context, child);
 
           Widget content = Container(
-            color: loadingController.isLoading
-                ? AppColors.background
-                : Colors.transparent,
-            child: loadingController.isLoading
-                ? const LoadingAnimation()
-                : wrappedApp,
+            color:
+                loadingController.isLoading
+                    ? AppColors.background
+                    : Colors.transparent,
+            child:
+                loadingController.isLoading
+                    ? const LoadingAnimation()
+                    : wrappedApp,
           );
 
-          // Wrap with Directionality for RTL languages (Arabic)
           content = Directionality(
             textDirection: textDirection,
             child: content,

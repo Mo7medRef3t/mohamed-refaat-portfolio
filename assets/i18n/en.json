@@ -1,5 +1,5 @@
 {
-  "app_name": "Yusuf İhsan Görgel - Portfolio",
+  "app_name": "Mohamed Refaat - Mobile Software Engineer",
   "navigation": {
     "items": [
       {
@@ -29,7 +29,7 @@
     ]
   },
   "translations": {
-    "app_name": "Yusuf İhsan Görgel - Portfolio",
+    "app_name": "Mohamed Refaat - Mobile Software Engineer",
     "home": "Home",
     "about": "About",
     "experience": "Experience",
@@ -65,303 +65,340 @@
     "page_transition_duration": 300
   },
   "social_links": {
-    "github": "https://github.com/Yusufihsangorgel",
-    "linkedin": "https://linkedin.com/in/yusuf-ihsan-görgel/",
-    "medium": "https://medium.com/@developeryusufihsan"
+    "github": "https://github.com/Mo7medRef3t",
+    "linkedin": "https://www.linkedin.com/in/mohamed-refaat-86baa4246/",
+    "email": "mailto:mr6737835@gmail.com"
   },
   "cv_data": {
     "personal_info": {
-      "name": "Yusuf İhsan Görgel",
-      "title": "Software Engineer",
-      "phone": "+90 544 953 0128",
-      "email": "developeryusuf@icloud.com",
-      "location": "Antalya, Türkiye (Remote)",
-      "github": "https://github.com/Yusufihsangorgel",
-      "linkedin": "https://linkedin.com/in/yusuf-ihsan-görgel/",
-      "bio": "I'm a software engineer from Turkey focused on Flutter and Go. I build mobile apps, web frontends, and the backend systems that power them — from database schemas to Docker deployments. Currently building SaaS products and open-source developer tools.",
-      "tagline": "Crafting digital experiences with code & creativity",
-      "medium": "developeryusufihsan",
+      "name": "Mohamed Refaat",
+      "title": "Mobile Software Engineer",
+      "phone": "+20 122 940 2458",
+      "email": "mr6737835@gmail.com",
+      "location": "Alexandria, Egypt (Open to Remote)",
+      "github": "https://github.com/Mo7medRef3t",
+      "linkedin": "https://www.linkedin.com/in/mohamed-refaat-86baa4246/",
+      "bio": "Mobile Software Engineer specializing in Flutter and Dart, with Excellent GPA (3.52/4.0) in Computing and Data Science. Experienced in architecting production-ready applications using Clean Architecture, BLoC/Cubit, and PowerSync for offline-first real-time synchronization. Skilled in integrating AI-driven features (Google Gemini API), native Android services (AlarmManager, Background Tasks), and building responsive, adaptive UI/UX for mobile and desktop platforms.",
+      "tagline": "Architecting Scalable, Offline-First Mobile Applications",
+      "medium": "",
       "stats": {
-        "years_experience": 5,
-        "projects_completed": 12,
+        "years_experience": 2,
+        "projects_completed": 8,
         "technologies": 20
       },
       "subtitles": [
-        "Software Engineer",
-        "Flutter & Go Developer",
-        "SaaS Builder"
+        "Mobile Software Engineer",
+        "Flutter & Dart Expert",
+        "Clean Architecture Enthusiast"
       ]
     },
     "experiences": [
       {
-        "title": "Flutter Developer",
-        "company": "Uzman Adres",
-        "position": "Flutter Developer",
-        "start_date": "Mar 2022",
+        "title": "AI Systems Evaluator",
+        "company": "Outlier",
+        "position": "AI Systems Evaluator",
+        "start_date": "Jun 2024",
         "end_date": "Present",
-        "period": "March 2022 – Present",
-        "description": "Building FugaSoft — a cross-platform POS and sales management system\nDeveloped complex SQL architectures with SQLite-Drift local database\nImplemented reactive programming with Mediator Pattern and GetX state management\nDeployed across Android/iOS tablets and desktop platforms (Linux, macOS, Windows)\nIntegrated socket technology for real-time data sync and barcode scanning systems",
+        "period": "June 2024 – Present",
+        "description": "Evaluated and optimized AI chatbot responses based on accuracy, reasoning quality, and strict adherence to guidelines. Designed and tested complex prompt scenarios to assess AI model behavior across edge cases. Provided structured feedback to improve model consistency and response reliability. Worked within a distributed remote environment under strict quality standards and deadlines.",
         "technologies": [
-          "Flutter",
-          "Dart",
-          "SQLite-Drift",
-          "GetX",
-          "WebSocket",
-          "i18n"
+          "AI Evaluation",
+          "Prompt Engineering",
+          "Code Review",
+          "Quality Assurance"
         ]
       },
       {
-        "title": "Full Stack Developer",
-        "company": "Junius Tech",
-        "position": "Full Stack Developer",
-        "start_date": "Jun 2023",
-        "end_date": "Feb 2025",
-        "period": "June 2023 – February 2025",
-        "description": "Led mobile development team on Dorse — a logistics tracking application\nBuilt Flutter apps deployed across Android, iOS, and web platforms\nImplemented WebSocket-based real-time vehicle tracking with Google/Apple Maps\nCoordinated frontend, backend, and QA workflows as Mobile Team Lead",
-        "technologies": [
-          "Flutter",
-          "React",
-          "Node.js",
-          "WebSocket",
-          "REST API",
-          "Maps SDK"
-        ]
-      },
-      {
-        "title": "Flutter Developer",
-        "company": "Promob TR",
-        "position": "Flutter Developer",
-        "start_date": "Oct 2022",
-        "end_date": "Jun 2024",
-        "period": "October 2022 – June 2024",
-        "description": "Developed Aydınlık E-Newspaper and Bilim ve Ütopya E-Magazine mobile applications\nImplemented MVVM architecture with GetX and Dio for API integration\nPublished to both Google Play and App Store",
+        "title": "Mobile Development Intern",
+        "company": "DEPI Program (MCIT)",
+        "position": "Flutter Developer Intern",
+        "start_date": "Oct 2024",
+        "end_date": "Jun 2025",
+        "period": "October 2024 – June 2025",
+        "description": "Participated in an intensive, hands-on training track focused on advanced Flutter and Android native development. Developed modular Flutter applications integrating RESTful APIs while applying UI/UX best practices and Clean Architecture. Applied Unit Testing fundamentals and technical documentation to ensure high-quality, maintainable codebases. Collaborated on team-based projects with structured codebases and feature-based development.",
         "technologies": [
           "Flutter",
           "Dart",
-          "GetX",
-          "Dio",
-          "MVVM"
+          "Clean Architecture",
+          "BLoC/Cubit",
+          "REST APIs",
+          "Unit Testing"
         ]
       }
     ],
     "projects": [
       {
-        "title": "FugaSoft (Pos - Sales Management Software)",
-        "description": "Flutter front-end, SQLite-Drift, GetX, i18n, reactive programming; Android/iOS tablet and desktop (Linux, macOS, Windows)",
-        "category": "Mobile",
-        "url": "https://fugasoft.com/",
-        "image": "assets/images/fugasoft.png",
-        "case_study": {
-          "problem": "Businesses needed a unified POS and sales management system that works reliably across Android/iOS tablets and desktop platforms (Linux, macOS, Windows), managing inventory across 50+ retail locations with barcode scanning and offline-first data sync.",
-          "solution": "Built a cross-platform Flutter application using SQLite-Drift for complex local SQL queries, GetX for reactive state management with Mediator Pattern, an offline-first sync engine with zero data loss, and full i18n support for multi-language deployment.",
-          "result": "Deployed to 5 platforms, processing 100K+ daily transactions with complex SQL architectures, reactive data streams, and real-time barcode scanning — serving daily retail operations with reliable offline-first capability."
-        }
-      },
-      {
-        "title": "Aydınlık E-Newspaper",
-        "description": "Flutter front-end, GetX, Dio, MVVM",
+        "title": "Memory Chat",
+        "description": "Production-grade collaborative note-taking app with real-time synchronization and offline-first architecture using PowerSync + Supabase",
         "category": "Mobile",
         "url": {
-          "google_play": "https://play.google.com/store/apps/details?id=com.aydinlikgazetesi.egazete&hl=tr",
-          "app_store": "https://apps.apple.com/us/app/ayd%C4%B1nl%C4%B1k-e-gazete/id1560103805"
+          "github": "https://github.com/Mo7medRef3t/memory-chat"
         },
-        "image": "assets/images/aydinlik.png",
+        "image": "assets/images/memory_chat.png",
+        "gallery_images": [
+          "assets/images/memory_chat_1.png",
+          "assets/images/memory_chat_2.png",
+          "assets/images/memory_chat_3.png",
+          "assets/images/memory_chat_4.png",
+          "assets/images/memory_chat_5.png"
+        ],
+        "detailed_description": "Memory Chat is a production-grade offline-first collaborative note-taking application built with Flutter, PowerSync, and Supabase. The app features a hierarchical organization system (Workspaces → Sections → Memory Boxes → Notes) with full CRUD operations and real-time synchronization across devices. The local-first architecture using Drift (SQLite) ensures zero data loss and instant UI updates even without internet connectivity. The responsive Slack-inspired UI adapts seamlessly between mobile (Drawer navigation) and desktop (persistent sidebar) layouts. Row Level Security (RLS) policies and authentication flows provide secure multi-user data isolation.",
         "case_study": {
-          "problem": "A major Turkish newspaper needed a modern digital reading experience for mobile users, with smooth page rendering, subscription management, and offline access to editions.",
-          "solution": "Developed a Flutter mobile app with MVVM architecture, GetX state management, and Dio for API integration. Implemented efficient page rendering and caching for a seamless reading experience.",
-          "result": "10K+ downloads with a 4.5+ star rating on both stores, providing thousands of readers with a reliable and performant digital newspaper experience on iOS and Android."
+          "problem": "Users needed a reliable note-taking app that works seamlessly offline and syncs across devices without data loss or conflicts when reconnecting to the internet.",
+          "solution": "Implemented PowerSync + Supabase integration for automatic conflict resolution and real-time sync. Engineered a local-first architecture using Drift (SQLite) ensuring instant UI updates even without internet connectivity. Built hierarchical organization (Workspaces → Sections → Memory Boxes → Notes) with full CRUD operations. Designed a responsive Slack-inspired UI with adaptive layout (Drawer for mobile, persistent sidebar for desktop). Implemented Row Level Security (RLS) policies and authentication flows for multi-user data isolation.",
+          "result": "Delivered a production-grade offline-first app with zero data loss, real-time multi-device sync, and a responsive Slack-inspired UI with adaptive layouts for mobile and desktop."
         }
       },
       {
-        "title": "Bilim ve Ütopya E-Magazine",
-        "description": "Flutter front-end, GetX, Dio, MVVM",
+        "title": "Egyptopia",
+        "description": "AI-assisted tourism platform with personalized itinerary planning and real-time smart recommendations. Graduation Project - Excellent Grade",
         "category": "Mobile",
         "url": {
-          "google_play": "https://play.google.com/store/apps/details?id=com.aydinlikgazetesi.edergi_v1_bvu&pcampaignid=web_share",
-          "app_store": "https://apps.apple.com/tr/app/bilim-ve-%C3%BCtopya-e-dergi/id6478221195"
+          "github": "https://github.com/Mo7medRef3t/Egyptopia"
         },
-        "image": "assets/images/bilim_utopya.png",
+        "image": "assets/images/egyptopia.png",
+        "gallery_images": [
+          "assets/images/egyptopia_1.png",
+          "assets/images/egyptopia_2.png",
+          "assets/images/egyptopia_3.png",
+          "assets/images/egyptopia_4.png",
+          "assets/images/egyptopia_5.png",
+          "assets/images/egyptopia_6.png",
+          "assets/images/egyptopia_7.png",
+          "assets/images/egyptopia_8.png",
+          "assets/images/egyptopia_9.png",
+          "assets/images/egyptopia_10.png",
+          "assets/images/egyptopia_11.png",
+          "assets/images/egyptopia_12.png",
+          "assets/images/egyptopia_13.png",
+          "assets/images/egyptopia_14.png",
+          "assets/images/egyptopia_15.png",
+          "assets/images/egyptopia_16.png"
+        ],
+        "detailed_description": "Egyptopia is a comprehensive AI-assisted tourism platform developed as a graduation project, achieving an Excellent grade. The app features an AI-Driven Itinerary Planner that dynamically generates personalized travel plans based on user budget, travel style, duration, and preferred categories via custom REST APIs. It integrates a Smart Chatbot (Virtual Assistant) and an adaptive Recommendation Engine that tailors content to user preferences in real-time. Advanced features include real-time debounced global search, dynamic filtering (by city, rating, price), and a weather module with auto-location detection. The app leverages Google Maps deep linking for seamless navigation and utilizes Hive for high-performance offline storage. A secure role-based access system (Guest vs. Registered User) is implemented using Firebase Authentication (Email & Google).",
         "case_study": {
-          "problem": "A science magazine required a dedicated digital platform for readers to access monthly issues, manage subscriptions, and enjoy rich scientific content on mobile devices.",
-          "solution": "Built a Flutter app sharing the proven MVVM architecture with Dio API integration, optimized for magazine-format content with high-quality image rendering and issue navigation.",
-          "result": "Serving thousands of monthly readers on Google Play and App Store, giving science enthusiasts a dedicated and polished mobile reading experience for Bilim ve Utopya magazine."
+          "problem": "Tourists in Egypt needed a comprehensive platform to plan personalized itineraries based on budget, travel style, and preferences, with real-time smart recommendations and AI-driven assistance.",
+          "solution": "Architected a large-scale tourism platform using hybrid state management (BLoC & GetX) adhering to Clean MVVM architecture. Engineered an AI-Driven Itinerary Planner via custom REST APIs that dynamically generates personalized travel plans. Integrated a Smart Chatbot (Virtual Assistant) and adaptive Recommendation Engine. Implemented real-time debounced global search, dynamic filtering (by city, rating, price), and weather module with auto-location detection. Enhanced UX with Google Maps deep linking and Hive for high-performance offline storage. Designed secure role-based access system (Guest vs. Registered User) using Firebase Authentication.",
+          "result": "Graduated with Excellent grade. Delivered a feature-rich platform with AI-powered planning, role-based access, Firebase Authentication, and high-performance offline storage serving tourists with personalized travel experiences."
         }
       },
       {
-        "title": "Dorse App",
-        "description": "Both mobile application and website; Mobile: Flutter; Web: HTML, CSS, JavaScript, React; Technologies used: RESTful API, SOLID, Google and Apple Maps integration, WebSocket",
-        "category": "Web",
+        "title": "Slumber",
+        "description": "Smart sleep tracking app with background tracking, gamification, and 40+ unit tests. Features custom Sleep Score engine and ambient audio",
+        "category": "Mobile",
         "url": {
-          "website": "https://dorseapp.com/",
-          "google_play": "https://play.google.com/store/apps/details?id=com.juniustech.dorse",
-          "app_store": "https://apps.apple.com/tr/app/dorse/id6670605686"
+          "github": "https://github.com/Mo7medRef3t/Slumber"
         },
-        "image": "assets/images/dorse.png",
+        "image": "assets/images/slumber.png",
+        "gallery_images": [
+          "assets/images/slumber_1.png",
+          "assets/images/slumber_2.png",
+          "assets/images/slumber_3.png",
+          "assets/images/slumber_4.png",
+          "assets/images/slumber_5.png",
+          "assets/images/slumber_6.png",
+          "assets/images/slumber_7.png"
+        ],
+        "detailed_description": "Slumber is a scalable, feature-modular sleep tracking application built with Clean Architecture and BLoC. The app features a resilient background tracking system using SharedPreferences and Android AlarmManager, ensuring zero data loss and triggering reliable Local Notifications (bedtime reminders & ongoing sessions) even when the app is completely terminated. A custom algorithmic Sleep Score engine evaluates duration, consistency, and bedtime, visualizing complex health metrics (Sleep Debt, weekly trends) via interactive FL Charts. The real-time Gamification & Achievements system is powered by inter-Cubit communication to dynamically evaluate user habits and unlock milestones. An ambient audio module using AudioPlayers features seamless auto-looping and customizable sleep timers (15/30/60 mins) synchronized with sleep tracking. The app includes 40+ comprehensive Unit Tests (100% passing) to validate core business logic, scoring algorithms, local data persistence, and midnight edge-case handling.",
         "case_study": {
-          "problem": "The logistics industry needed a real-time vehicle tracking and fleet management solution that works across mobile platforms and web, with live location updates and route optimization.",
-          "solution": "Led mobile development using Flutter with WebSocket-based real-time vehicle tracking, Google and Apple Maps SDK integration, RESTful API architecture following SOLID principles, and a companion React web dashboard.",
-          "result": "Tracking 5,000+ concurrent vehicles with <200ms latency across Android, iOS, and web platforms — enabling logistics companies to track vehicles in real time, optimize routes, and manage fleets with reliable WebSocket connections."
+          "problem": "Users needed a reliable sleep tracking app that continues tracking even when the app is terminated, with accurate sleep scoring, engaging gamification, and zero data loss.",
+          "solution": "Architected a scalable, feature-modular sleep tracking application using Clean Architecture and BLoC. Developed a resilient background tracking system using SharedPreferences and Android AlarmManager, ensuring zero data loss and triggering reliable Local Notifications (bedtime reminders & ongoing sessions) even when the app is completely terminated. Engineered a custom algorithmic Sleep Score engine evaluating duration, consistency, and bedtime, visualizing complex health metrics (Sleep Debt, weekly trends) via interactive FL Charts. Built real-time Gamification & Achievements system powered by inter-Cubit communication. Integrated ambient audio module with auto-looping and customizable sleep timers (15/30/60 mins).",
+          "result": "Authored 40+ comprehensive Unit Tests (100% passing). Delivered reliable local notifications, ambient audio with seamless auto-looping, and a scalable feature-modular architecture with custom health metrics visualization."
         }
       },
       {
-        "title": "FakeCallApp",
-        "description": "Prank video call app with 80+ characters — Flutter mobile + Next.js website",
-        "category": "Web",
-        "url": "https://fakecallapp.com"
+        "title": "Plant Identifier",
+        "description": "AI-driven plant identification app leveraging Google's Gemini API for image recognition with Clean Architecture",
+        "category": "Mobile",
+        "url": {
+          "github": "https://github.com/Mo7medRef3t/plant-identifier"
+        },
+        "image": "assets/images/plant_identifier.png",
+        "gallery_images": [
+          "assets/images/plant_identifier_1.png",
+          "assets/images/plant_identifier_2.png"
+        ],
+        "detailed_description": "Plant Identifier is an AI-driven plant identification application leveraging Google's Gemini API for image recognition. The app implements Clean Architecture pattern for a maintainable, testable codebase with clear separation of concerns. It integrates camera and gallery functionality with platform-specific permissions (Android Manifest & iOS Info.plist). A modular repository pattern enables easy backend swapping without UI refactoring, ensuring long-term maintainability and scalability.",
+        "case_study": {
+          "problem": "Users needed a quick and accurate way to identify plants using just their camera, with a maintainable and testable codebase that follows best practices.",
+          "solution": "Developed an AI-driven plant identification app leveraging Google's Gemini API for image recognition. Implemented Clean Architecture pattern for maintainable, testable codebase with clear separation of concerns. Integrated camera and gallery functionality with platform-specific permissions (Android Manifest & iOS Info.plist). Engineered a modular repository pattern enabling easy backend swapping without UI refactoring.",
+          "result": "Delivered a maintainable, testable app with platform-specific permissions handling and seamless camera/gallery integration, providing users with instant AI-powered plant identification."
+        }
       },
       {
-        "title": "CleanMyGallery",
-        "description": "Smart phone gallery cleaner — compress, watermark, EXIF strip",
-        "category": "Web",
-        "url": "https://cleanmygallery.com"
+        "title": "Bookly",
+        "description": "Book discovery app integrating Google Books API with BLoC state management, Dio, Dartz, and GoRouter",
+        "category": "Mobile",
+        "url": {
+          "github": "https://github.com/Mo7medRef3t/bookly"
+        },
+        "image": "assets/images/bookly.png",
+        "gallery_images": [
+          "assets/images/bookly_1.png",
+          "assets/images/bookly_2.png",
+          "assets/images/bookly_3.png",
+          "assets/images/bookly_4.png"
+        ],
+        "detailed_description": "Bookly is a book discovery application that integrates the Google Books API to fetch and display books in real time. The app implements BLoC for predictable state management and clean separation of concerns. It uses Dio for networking, Dartz for functional programming, and GoRouter for navigation. GetIt is applied for dependency injection. The responsive, dark-themed UI is focused on usability and smooth navigation, providing an excellent user experience for book enthusiasts.",
+        "case_study": {
+          "problem": "Readers needed a clean, responsive app to discover books in real-time with predictable state management and smooth navigation.",
+          "solution": "Built a book discovery app integrating Google Books API to fetch and display books in real time. Implemented BLoC for predictable state management and clean separation of concerns. Used Dio for networking, Dartz for functional programming, and GoRouter for navigation. Applied GetIt for dependency injection. Designed a responsive, dark-themed UI focused on usability.",
+          "result": "Delivered a responsive, dark-themed UI focused on usability and smooth navigation with proper dependency injection and predictable state management."
+        }
       },
       {
-        "title": "FocusGroves",
-        "description": "Pomodoro focus timer with study rooms, tasks, and productivity tracking",
-        "category": "Web",
-        "url": "https://focusgroves.com"
+        "title": "Fruit Market",
+        "description": "E-commerce mobile app with categorized product browsing, REST APIs integration, and optimized UI using GetX",
+        "category": "Mobile",
+        "url": {
+          "github": "https://github.com/Mo7medRef3t/fruits_market"
+        },
+        "image": "assets/images/fruits_market.png",
+        "gallery_images": [
+          "assets/images/fruits_market_1.png",
+          "assets/images/fruits_market_2.png",
+          "assets/images/fruits_market_3.png",
+          "assets/images/fruits_market_4.png",
+          "assets/images/fruits_market_5.png",
+          "assets/images/fruits_market_6.png",
+          "assets/images/fruits_market_7.png"
+        ],
+        "detailed_description": "Fruit Market is an e-commerce mobile application featuring categorized product browsing and detailed product screens. The app integrates REST APIs for real-time product data fetching, search functionality, and favorites management. UI performance is optimized using GetX state management to reduce unnecessary rebuilds and ensure smooth real-time data fetching. Local storage is implemented using GetStorage for persistent user preferences and shopping cart data.",
+        "case_study": {
+          "problem": "Users needed a fast, responsive e-commerce app for browsing fruits with real-time product data, search functionality, and favorites management.",
+          "solution": "Developed an e-commerce mobile app with categorized product browsing and detailed product screens. Integrated REST APIs for real-time product data fetching, search functionality, and favorites management. Optimized UI performance using GetX state management to reduce unnecessary rebuilds and ensure smooth real-time data fetching. Implemented local storage using GetStorage.",
+          "result": "Delivered a smooth, performant app with efficient search functionality, favorites management, and optimized UI performance with minimal rebuilds."
+        }
       },
       {
-        "title": "MoodGrade",
-        "description": "Mood tracking with medication logs, AI insights, and data export",
-        "category": "Web",
-        "url": "https://moodgrade.com"
-      },
-      {
-        "title": "GetQrivo",
-        "description": "QR code generator with short links and scan analytics",
-        "category": "Web",
-        "url": "https://getqrivo.com"
-      },
-      {
-        "title": "OverlayPhoto",
-        "description": "Photo overlay editor with filters, frames, and time capsules",
-        "category": "Web",
-        "url": "https://overlayphoto.com"
-      },
-      {
-        "title": "DistractionKiller",
-        "description": "App blocker and digital wellness tool with focus schedules",
-        "category": "Web",
-        "url": "https://distractionkiller.com"
-      },
-      {
-        "title": "KPSSHazirlan",
-        "description": "Civil service exam preparation platform with study plans and practice tests",
-        "category": "Web",
-        "url": "https://kpsshazirlan.com"
-      },
-      {
-        "title": "EhliyetCoz",
-        "description": "Driving license exam prep with daily quizzes and progress tracking",
-        "category": "Web",
-        "url": "https://ehliyetcoz.com"
-      },
-      {
-        "title": "Kazanamazi",
-        "description": "Missed prayer and fasting tracker with heatmaps and reminders",
-        "category": "Web",
-        "url": "https://kazanamazi.net"
-      },
-      {
-        "title": "PDFScanPro",
-        "description": "PDF toolkit — convert, compress, merge, split, and scan documents",
-        "category": "Web",
-        "url": "https://pdfscanpro.com"
+        "title": "CoWork Connect",
+        "description": "Professional networking and collaboration platform for remote teams and freelancers",
+        "category": "Mobile",
+        "url": {
+          "github": "https://github.com/Mo7medRef3t/cowork-connect"
+        },
+        "image": "assets/images/cowork_connect.png",
+        "gallery_images": [
+          "assets/images/cowork_connect_1.png",
+          "assets/images/cowork_connect_2.png",
+          "assets/images/cowork_connect_3.png",
+          "assets/images/cowork_connect_4.png",
+          "assets/images/cowork_connect_5.png",
+          "assets/images/cowork_connect_6.png",
+          "assets/images/cowork_connect_7.png",
+          "assets/images/cowork_connect_8.png"
+        ],
+        "detailed_description": "CoWork Connect is a professional networking and collaboration platform designed for remote teams and freelancers. The app facilitates seamless communication, project management, and skill-based matching. It features real-time messaging, task tracking, and a comprehensive profile system showcasing user skills, portfolios, and availability. The app leverages Firebase for authentication and real-time data synchronization, ensuring a smooth and responsive user experience across all devices.",
+        "case_study": {
+          "problem": "Remote teams and freelancers needed a centralized platform for professional networking, real-time collaboration, and skill-based project matching.",
+          "solution": "Developed a comprehensive networking platform with real-time messaging, task tracking, and skill-based matching algorithms. Implemented Firebase Authentication for secure user access and Firestore for real-time data synchronization. Built a responsive UI with adaptive layouts for mobile and desktop, featuring profile management, portfolio showcase, and availability scheduling. Integrated push notifications for instant communication and task updates.",
+          "result": "Delivered a feature-rich collaboration platform enabling remote professionals to connect, communicate, and collaborate effectively with real-time synchronization and intuitive user experience."
+        }
       }
     ],
     "education": [
       {
-        "school": "Mehmet Akif Ersoy University",
-        "degree": "Software Engineering",
-        "period": "2021-2025"
-      },
-      {
-        "school": "Dursun Yalım Science High School",
-        "period": "2015-2020"
+        "school": "Alexandria University",
+        "degree": "Bachelor's Degree in Computing and Data Science",
+        "period": "2021-2025",
+        "grade": "Excellent (CGPA: 3.52/4.0)",
+        "graduation_project": "Egyptopia – AI-assisted tourism mobile application (Grade: Excellent)"
       }
     ],
     "skills": [
       {
-        "category": "Mobile",
+        "category": "Languages & Frameworks",
         "items": [
           "Flutter",
           "Dart",
-          "Swift",
-          "SwiftUI",
+          "Java",
+          "Kotlin (Basics)",
+          "Python",
+          "C++"
+        ]
+      },
+      {
+        "category": "Architecture & State Management",
+        "items": [
+          "Clean Architecture",
+          "MVVM",
+          "SOLID Principles",
+          "BLoC/Cubit",
           "GetX",
-          "BLoC",
-          "Provider"
+          "GetIt (Dependency Injection)",
+          "Feature Based Development"
         ]
       },
       {
-        "category": "Backend",
+        "category": "Backend & APIs",
         "items": [
-          "Node.js",
-          "Express.js",
-          "Go",
-          "Spring Boot",
-          "MongoDB",
-          "MSSQL",
-          "SQLite"
+          "Firebase (Auth, Firestore, Storage)",
+          "RESTful APIs",
+          "JSON",
+          "Django APIs",
+          "Supabase",
+          "PowerSync"
         ]
       },
       {
-        "category": "Frontend",
+        "category": "Databases & Storage",
         "items": [
-          "React",
-          "JavaScript",
-          "TypeScript",
-          "HTML",
-          "CSS"
+          "Cloud: Firebase Firestore, Supabase",
+          "Local: Hive, SharedPreferences, GetStorage, Drift (SQLite)"
         ]
       },
       {
-        "category": "DevOps",
+        "category": "Native & Advanced Features",
         "items": [
-          "AWS",
-          "Docker",
+          "Android AlarmManager",
+          "Local Notifications",
+          "Audio Players",
+          "Background Tasks",
+          "Camera & Image Picker Integration",
+          "Google Maps API & Location Services",
+          "Row Level Security (RLS)"
+        ]
+      },
+      {
+        "category": "AI & ML Integrations",
+        "items": [
+          "Google Gemini API",
+          "AI-driven Recommendations",
+          "Chatbot Integration"
+        ]
+      },
+      {
+        "category": "Tools & Platforms",
+        "items": [
           "Git",
-          "CI/CD",
-          "Firebase"
+          "GitHub",
+          "Postman",
+          "Figma",
+          "Google Cloud Console",
+          "Supabase Dashboard",
+          "PowerSync"
+        ]
+      },
+      {
+        "category": "Testing & Quality",
+        "items": [
+          "Unit Testing",
+          "Debugging",
+          "Functional Testing",
+          "Performance Optimization"
+        ]
+      },
+      {
+        "category": "UI/UX & Visualization",
+        "items": [
+          "FL Charts",
+          "Responsive Design (Mobile/Desktop Adaptive)",
+          "Custom Animations",
+          "Modular Widget Architecture",
+          "Dark/Light Theme Support"
         ]
       }
-    ],
-    "languages": [
-      {
-        "name": "Turkish",
-        "level": "Native"
-      },
-      {
-        "name": "English",
-        "level": "B2"
-      }
-    ],
-    "testimonials": [
-      {
-        "quote": "Working with Yusuf on the Dorse logistics platform was a great experience. He led the mobile team effectively, delivering real-time vehicle tracking with WebSocket integration across both iOS and Android. His technical depth in Flutter is outstanding.",
-        "name": "Emrah Turk",
-        "position": "Senior Software Developer",
-        "company": "Junius Tech (Dorse)"
-      },
-      {
-        "quote": "Yusuf has a strong grasp of both mobile and backend systems. On the Promob e-magazine and e-newspaper platform he built critical features end-to-end — from the Flutter frontend to the API layer — with clean, maintainable code. A dependable engineer who delivers on time.",
-        "name": "Ferhat Balaban",
-        "position": "Senior Computer Engineer",
-        "company": "Promob.tr"
-      }
-    ],
-    "contact": {
-      "formspree_id": "YOUR_FORMSPREE_ID",
-      "form": {
-        "name_label": "Name",
-        "email_label": "Email",
-        "message_label": "Message",
-        "submit_button": "Send"
-      },
-      "success_message": "Your message has been sent successfully!",
-      "error_message": "An error occurred. Please try again."
-    }
+    ]
   },
   "language_info": {
     "code": "en",
@@ -371,7 +408,7 @@
   },
   "terminal": {
     "title": "Terminal",
-    "welcome_title": "Yusuf İhsan Görgel - Terminal",
+    "welcome_title": "Mohamed Refaat - Terminal",
     "welcome_text": "Welcome! Type 'help' to see available commands.",
     "help_hint": "Tip: Type 'help' to see available commands",
     "greeting": "Terminal",
@@ -424,7 +461,7 @@
     "social": {
       "github": "GitHub",
       "linkedin": "LinkedIn",
-      "twitter": "Twitter"
+      "email": "Email"
     }
   },
   "nav": {
@@ -439,8 +476,8 @@
   },
   "about_section": {
     "title": "About Me",
-    "bio": "I'm a Software Engineer with 4+ years of experience specializing in production-grade mobile applications. I focus on architecture, performance, and reliability — building cross-platform apps with Flutter and native iOS/Android capabilities with Swift and Kotlin.",
-    "bio2": "Here are a few technologies I've been working with recently:",
+    "bio": "I'm a Mobile Software Engineer with a BSc in Computing and Data Science from Alexandria University (Excellent GPA: 3.52/4.0). I specialize in architecting production-ready Flutter applications using Clean Architecture and BLoC/Cubit. Recently, I've focused on offline-first systems with PowerSync and Supabase, enabling real-time sync with automatic conflict resolution. I'm skilled in integrating AI features (Google Gemini API) and native Android services.",
+    "bio2": "Here are the technologies I've been working with recently:",
     "github_title": "GitHub Activity",
     "github_repos": "Repos",
     "github_followers": "Followers",
@@ -461,14 +498,15 @@
     "link_labels": {
       "google_play": "Google Play",
       "app_store": "App Store",
-      "website": "Website"
+      "website": "Website",
+      "github": "GitHub"
     }
   },
   "home_section": {
     "greeting": "Hi, my name is",
-    "title": "Yusuf İhsan Görgel.",
-    "subtitle": "I build things for mobile.",
-    "bio": "I'm a software engineer specializing in building production-grade mobile applications. Currently focused on cross-platform development with Flutter at Uzman Adres, crafting pixel-perfect, performant experiences across Android, iOS, and desktop.",
+    "title": "Mohamed Refaat.",
+    "subtitle": "I build offline-first mobile apps.",
+    "bio": "I'm a Mobile Software Engineer specializing in Flutter & Dart. I architect scalable, production-grade applications using Clean Architecture, BLoC/Cubit, and PowerSync for real-time offline-first synchronization. Passionate about integrating AI-driven features and delivering pixel-perfect, user-centric experiences.",
     "view_work": "View My Work",
     "download_cv": "Download CV",
     "contact": "Contact"
@@ -480,7 +518,7 @@
   "contact_section": {
     "title": "Get In Touch",
     "whats_next": "What's Next?",
-    "description": "I'm always open to new challenges and collaborations. Whether you have a project idea, a question, or just want to connect — feel free to reach out!",
+    "description": "I'm currently open to new opportunities in mobile development. Whether you have a project, a question, or just want to connect — my inbox is always open!",
     "form": {
       "name_label": "Name",
       "email_label": "Email",
@@ -491,7 +529,7 @@
       "message_error": "Please enter your message",
       "success": "Your message has been sent successfully!",
       "error": "An error occurred. Please try again.",
-      "or_divider": "or send a message directly"
+      "or_divider": "or reach out directly"
     }
   },
   "blog_section": {
