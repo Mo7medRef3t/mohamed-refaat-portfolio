@@ -37,7 +37,10 @@ class _BorderLightCardState extends State<BorderLightCard> {
 
   @override
   Widget build(BuildContext context) {
-    final accent = widget.glowColor ?? AppColors.heroAccent;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accent =
+        widget.glowColor ??
+        (isDark ? AppColors.heroAccent : AppColorsLight.heroAccent);
 
     return CinematicHover(
       glowColor: accent,
@@ -51,30 +54,48 @@ class _BorderLightCardState extends State<BorderLightCard> {
         },
         child: ValueListenableBuilder<Offset>(
           valueListenable: _mousePos,
-          builder: (context, mousePos, child) =>
-              ValueListenableBuilder<bool>(
-            valueListenable: _hovered,
-            builder: (context, hovered, _) => CustomPaint(
-              foregroundPainter: hovered
-                  ? _BorderGlowPainter(
-                      mousePos: mousePos,
-                      glowColor: accent,
-                      borderRadius: widget.borderRadius,
-                    )
-                  : null,
-              child: child,
-            ),
-          ),
+          builder:
+              (context, mousePos, child) => ValueListenableBuilder<bool>(
+                valueListenable: _hovered,
+                builder:
+                    (context, hovered, _) => CustomPaint(
+                      foregroundPainter:
+                          hovered
+                              ? _BorderGlowPainter(
+                                mousePos: mousePos,
+                                glowColor: accent,
+                                borderRadius: widget.borderRadius,
+                              )
+                              : null,
+                      child: child,
+                    ),
+              ),
           child: Container(
             padding: widget.padding,
             decoration: BoxDecoration(
-              color: widget.backgroundColor ??
-                  AppColors.backgroundLight.withValues(alpha: 0.5),
+              color:
+                  widget.backgroundColor ??
+                  (isDark
+                      ? AppColors.backgroundLight.withValues(alpha: 0.5)
+                      : AppColorsLight.backgroundLight.withValues(alpha: 0.8)),
               borderRadius: BorderRadius.circular(widget.borderRadius),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.05),
+                color:
+                    isDark
+                        ? Colors.white.withValues(alpha: 0.05)
+                        : Colors.black.withValues(alpha: 0.1),
                 width: 1,
               ),
+              boxShadow:
+                  isDark
+                      ? []
+                      : [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
             ),
             child: widget.child,
           ),
@@ -95,9 +116,10 @@ class _BorderGlowPainter extends CustomPainter {
   final Color glowColor;
   final double borderRadius;
 
-  static final _paint = Paint()
-    ..style = PaintingStyle.stroke
-    ..strokeWidth = 1.5;
+  static final _paint =
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5;
 
   @override
   void paint(Canvas canvas, Size size) {

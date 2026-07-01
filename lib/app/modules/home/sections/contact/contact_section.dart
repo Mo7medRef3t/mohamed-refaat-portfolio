@@ -83,7 +83,7 @@ class ContactSection extends StatelessWidget {
                         final accent =
                             Get.find<SceneDirector>().currentAccent.value;
                         return NumberedSectionHeading(
-                          number: '06',
+                          number: '04',
                           title: languageController.getText(
                             'contact_section.title',
                             defaultValue: 'Get In Touch',

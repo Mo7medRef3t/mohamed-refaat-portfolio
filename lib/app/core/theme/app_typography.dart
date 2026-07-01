@@ -1,4 +1,4 @@
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_web_portfolio/app/core/constants/app_colors.dart';
 
@@ -116,4 +116,43 @@ final class AppTypography {
     color: AppColors.textSecondary,
   );
 
+  // ────────────────────────────────────────────────────────────────────
+  // Theme-Aware Helper Methods
+  // ────────────────────────────────────────────────────────────────────
+
+  /// Returns body text style with theme-aware color
+  static TextStyle bodyOf(BuildContext context) =>
+      body.copyWith(color: AppColors.textPrimaryOf(context));
+
+  /// Returns body small text style with theme-aware color
+  static TextStyle bodySmallOf(BuildContext context) =>
+      bodySmall.copyWith(color: AppColors.textPrimaryOf(context));
+
+  /// Returns h1 text style with theme-aware color
+  static TextStyle h1Of(BuildContext context) =>
+      h1.copyWith(color: AppColors.textBrightOf(context));
+
+  /// Returns h2 text style with theme-aware color
+  static TextStyle h2Of(BuildContext context) =>
+      h2.copyWith(color: AppColors.textBrightOf(context));
+
+  /// Returns h3 text style with theme-aware color
+  static TextStyle h3Of(BuildContext context) =>
+      h3.copyWith(color: AppColors.textBrightOf(context));
+
+  /// Returns caption text style with theme-aware color
+  static TextStyle captionOf(BuildContext context) =>
+      caption.copyWith(color: AppColors.textSecondaryOf(context));
+
+  /// Returns mono text style with theme-aware color
+  static TextStyle monoOf(BuildContext context) =>
+      mono.copyWith(color: AppColors.textSecondaryOf(context));
+
+  /// Returns nav label text style with theme-aware color
+  static TextStyle navLabelOf(BuildContext context) =>
+      navLabel.copyWith(color: AppColors.textPrimaryOf(context));
+
+  /// Returns label text style with theme-aware accent color
+  static TextStyle labelOf(BuildContext context) =>
+      label.copyWith(color: AppColors.accentOf(context));
 }

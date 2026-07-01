@@ -102,7 +102,7 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                 child: Obx(() {
                   final accent = Get.find<SceneDirector>().currentAccent.value;
                   return NumberedSectionHeading(
-                    number: '05',
+                    number: '03',
                     title: languageController.getText(
                       'projects_section.title',
                       defaultValue: "Things I've Built",

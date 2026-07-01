@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_web_portfolio/app/widgets/theme_toggle_button.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_web_portfolio/app/controllers/language_controller.dart';
@@ -139,7 +140,7 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
               : null,
       actions: [
         if (!isMobile) _buildNavItems(),
-        // const ThemeToggleButton(),
+        const ThemeToggleButton(),
         const SizedBox(width: 8),
         // const LanguageSwitcher(),
         ...?widget.actions,

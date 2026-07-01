@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -297,9 +298,10 @@ class _AdvancedCursorState extends State<AdvancedCursor>
       return;
     }
 
-    final dt = _lastTick == Duration.zero
-        ? 1 / 60
-        : (elapsed - _lastTick).inMicroseconds / 1e6;
+    final dt =
+        _lastTick == Duration.zero
+            ? 1 / 60
+            : (elapsed - _lastTick).inMicroseconds / 1e6;
     _lastTick = elapsed;
     _elapsed = elapsed.inMicroseconds / 1e6;
 
@@ -337,7 +339,10 @@ class _AdvancedCursorState extends State<AdvancedCursor>
     _labelOpacitySpring.step(safeDt);
 
     // Trail
-    _trail.insert(0, _TrailPoint(Offset(_smoothPosition.dx, _smoothPosition.dy), _elapsed));
+    _trail.insert(
+      0,
+      _TrailPoint(Offset(_smoothPosition.dx, _smoothPosition.dy), _elapsed),
+    );
     while (_trail.length > _maxTrailPoints) {
       _trail.removeLast();
     }
@@ -429,14 +434,18 @@ class _AdvancedCursorState extends State<AdvancedCursor>
                           position: _smoothPosition,
                           ringSize: _ringSpring.value,
                           dotSize: _dotSpring.value,
-                          fillOpacity: _fillOpacitySpring.value
-                              .clamp(0.0, 1.0),
+                          fillOpacity: _fillOpacitySpring.value.clamp(0.0, 1.0),
                           accentColor: _accentColor,
                           state: _advCtrl.state.value,
                           labelText: _advCtrl.label.value,
-                          labelOpacity: _labelOpacitySpring.value
-                              .clamp(0.0, 1.0),
+                          labelOpacity: _labelOpacitySpring.value.clamp(
+                            0.0,
+                            1.0,
+                          ),
                           velocity: _velocity,
+                          isDark:
+                              Theme.of(context).brightness ==
+                              Brightness.dark, // أضفنا ده
                         ),
                       ),
                     ),
@@ -470,6 +479,7 @@ class _CursorMorphPainter extends CustomPainter {
     required this.velocity,
     this.labelText,
     this.labelOpacity = 0.0,
+    this.isDark = true, // أضفنا ده
   });
 
   final Offset position;
@@ -481,6 +491,7 @@ class _CursorMorphPainter extends CustomPainter {
   final double velocity;
   final String? labelText;
   final double labelOpacity;
+  final bool isDark; // أضفنا ده
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -490,25 +501,33 @@ class _CursorMorphPainter extends CustomPainter {
 
       // Filled background (hover / image states)
       if (fillOpacity > 0.001) {
-        final fillPaint = Paint()
-          ..color = accentColor.withValues(alpha: fillOpacity)
-          ..style = PaintingStyle.fill;
+        final fillPaint =
+            Paint()
+              ..color = accentColor.withValues(alpha: fillOpacity)
+              ..style = PaintingStyle.fill;
         canvas.drawCircle(position, ringRadius, fillPaint);
       }
 
-      // Stroke ring
-      final ringPaint = Paint()
-        ..color = Colors.white.withValues(alpha: 0.35)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5;
+      // Stroke ring - في الـ Light Mode نستخدم لون أغمق
+      final ringPaint =
+          Paint()
+            ..color =
+                isDark
+                    ? Colors.white.withValues(alpha: 0.35)
+                    : Colors.black.withValues(
+                      alpha: 0.5,
+                    ) // غامق أكتر في الـ Light Mode
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1.5;
       canvas.drawCircle(position, ringRadius, ringPaint);
     }
 
     // ---- Dot ----
     if (dotSize > 0.5) {
-      final dotPaint = Paint()
-        ..color = accentColor
-        ..style = PaintingStyle.fill;
+      final dotPaint =
+          Paint()
+            ..color = accentColor
+            ..style = PaintingStyle.fill;
       canvas.drawCircle(position, dotSize / 2, dotPaint);
     }
 
@@ -529,16 +548,22 @@ class _CursorMorphPainter extends CustomPainter {
 
     // ---- "View" text inside ring for image state ----
     if (state == CursorState.image && ringSize > 20) {
-      _drawCenteredText(canvas, 'View', ringSize);
+      _drawCenteredText(canvas);
     }
   }
 
   void _drawIBeam(Canvas canvas) {
-    final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.9)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5
-      ..strokeCap = StrokeCap.round;
+    final paint =
+        Paint()
+          ..color =
+              isDark
+                  ? Colors.white.withValues(alpha: 0.9)
+                  : Colors.black.withValues(
+                    alpha: 0.9,
+                  ) // غامق في الـ Light Mode
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5
+          ..strokeCap = StrokeCap.round;
 
     const halfHeight = 10.0;
     const serifWidth = 4.0;
@@ -563,21 +588,28 @@ class _CursorMorphPainter extends CustomPainter {
   }
 
   void _drawGrabHand(Canvas canvas) {
-    final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.85)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
+    final paint =
+        Paint()
+          ..color =
+              isDark
+                  ? Colors.white.withValues(alpha: 0.85)
+                  : Colors.black.withValues(
+                    alpha: 0.85,
+                  ) // غامق في الـ Light Mode
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.5
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round;
 
     // Simplified grab-hand icon (open palm outline)
     final cx = position.dx;
     final cy = position.dy;
-    final path = Path()
-      // Palm base arc
-      ..moveTo(cx - 8, cy + 4)
-      ..quadraticBezierTo(cx - 8, cy + 10, cx, cy + 10)
-      ..quadraticBezierTo(cx + 8, cy + 10, cx + 8, cy + 4);
+    final path =
+        Path()
+          // Palm base arc
+          ..moveTo(cx - 8, cy + 4)
+          ..quadraticBezierTo(cx - 8, cy + 10, cx, cy + 10)
+          ..quadraticBezierTo(cx + 8, cy + 10, cx + 8, cy + 4);
 
     // Fingers (four short lines from top of palm)
     for (var i = -1.5; i <= 1.5; i += 1.0) {
@@ -588,8 +620,8 @@ class _CursorMorphPainter extends CustomPainter {
         // Fingertip cap
         ..addArc(
           Rect.fromCircle(center: Offset(fx, cy - 6), radius: 1.2),
-          math.pi,
-          math.pi,
+          pi,
+          pi,
         );
     }
 
@@ -600,21 +632,30 @@ class _CursorMorphPainter extends CustomPainter {
     final text = labelText;
     if (text == null || text.isEmpty) return;
 
-    final paragraphBuilder = ui.ParagraphBuilder(
-      ui.ParagraphStyle(
-        textAlign: TextAlign.left,
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-      ),
-    )
-      ..pushStyle(ui.TextStyle(
-        color: Colors.white.withValues(alpha: labelOpacity * 0.9),
-        letterSpacing: 1.2,
-      ))
-      ..addText(text.toUpperCase());
+    final paragraphBuilder =
+        ui.ParagraphBuilder(
+            ui.ParagraphStyle(
+              textAlign: TextAlign.left,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          )
+          ..pushStyle(
+            ui.TextStyle(
+              color:
+                  isDark
+                      ? Colors.white.withValues(alpha: labelOpacity * 0.9)
+                      : Colors.black.withValues(
+                        alpha: labelOpacity * 0.9,
+                      ), // غامق في الـ Light Mode
+              letterSpacing: 1.2,
+            ),
+          )
+          ..addText(text.toUpperCase());
 
-    final paragraph = paragraphBuilder.build()
-      ..layout(const ui.ParagraphConstraints(width: 200));
+    final paragraph =
+        paragraphBuilder.build()
+          ..layout(const ui.ParagraphConstraints(width: 200));
 
     final offset = Offset(
       position.dx + (ringSize / 2) + 12,
@@ -624,22 +665,31 @@ class _CursorMorphPainter extends CustomPainter {
     canvas.drawParagraph(paragraph, offset);
   }
 
-  void _drawCenteredText(Canvas canvas, String text, double ringSize) {
-    final paragraphBuilder = ui.ParagraphBuilder(
-      ui.ParagraphStyle(
-        textAlign: TextAlign.center,
-        fontSize: 11,
-        fontWeight: FontWeight.w600,
-      ),
-    )
-      ..pushStyle(ui.TextStyle(
-        color: Colors.white.withValues(alpha: 0.9),
-        letterSpacing: 2.0,
-      ))
-      ..addText(text.toUpperCase());
+  void _drawCenteredText(Canvas canvas) {
+    final paragraphBuilder =
+        ui.ParagraphBuilder(
+            ui.ParagraphStyle(
+              textAlign: TextAlign.center,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          )
+          ..pushStyle(
+            ui.TextStyle(
+              color:
+                  isDark
+                      ? Colors.white.withValues(alpha: 0.9)
+                      : Colors.black.withValues(
+                        alpha: 0.9,
+                      ), // غامق في الـ Light Mode
+              letterSpacing: 2.0,
+            ),
+          )
+          ..addText('VIEW');
 
-    final paragraph = paragraphBuilder.build()
-      ..layout(ui.ParagraphConstraints(width: ringSize));
+    final paragraph =
+        paragraphBuilder.build()
+          ..layout(ui.ParagraphConstraints(width: ringSize));
 
     final offset = Offset(
       position.dx - ringSize / 2,
@@ -651,9 +701,7 @@ class _CursorMorphPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_CursorMorphPainter old) => true; // driven by ticker
-}
-
-// ---------------------------------------------------------------------------
+} // ---------------------------------------------------------------------------
 // 2. Trail painter – smooth bezier ribbon
 // ---------------------------------------------------------------------------
 
@@ -689,29 +737,28 @@ class _TrailPainter extends CustomPainter {
 
       // Quadratic bezier through three consecutive points
       final controlPoint = p1;
-      final endPoint = Offset(
-        (p1.dx + p2.dx) / 2,
-        (p1.dy + p2.dy) / 2,
-      );
+      final endPoint = Offset((p1.dx + p2.dx) / 2, (p1.dy + p2.dy) / 2);
 
-      final path = Path()
-        ..moveTo(
-          i == 0 ? p0.dx : (points[i - 1].position.dx + p0.dx) / 2,
-          i == 0 ? p0.dy : (points[i - 1].position.dy + p0.dy) / 2,
-        )
-        ..quadraticBezierTo(
-          controlPoint.dx,
-          controlPoint.dy,
-          endPoint.dx,
-          endPoint.dy,
-        );
+      final path =
+          Path()
+            ..moveTo(
+              i == 0 ? p0.dx : (points[i - 1].position.dx + p0.dx) / 2,
+              i == 0 ? p0.dy : (points[i - 1].position.dy + p0.dy) / 2,
+            )
+            ..quadraticBezierTo(
+              controlPoint.dx,
+              controlPoint.dy,
+              endPoint.dx,
+              endPoint.dy,
+            );
 
-      final paint = Paint()
-        ..color = color.withValues(alpha: opacity)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = width
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round;
+      final paint =
+          Paint()
+            ..color = color.withValues(alpha: opacity)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = width
+            ..strokeCap = StrokeCap.round
+            ..strokeJoin = StrokeJoin.round;
 
       canvas.drawPath(path, paint);
     }
@@ -738,18 +785,17 @@ class _SpotlightPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          color.withValues(alpha: 0.065),
-          color.withValues(alpha: 0.025),
-          color.withValues(alpha: 0.0),
-        ],
-        stops: const [0.0, 0.5, 1.0],
-      ).createShader(
-        Rect.fromCircle(center: position, radius: radius),
-      )
-      ..blendMode = BlendMode.screen;
+    final paint =
+        Paint()
+          ..shader = RadialGradient(
+            colors: [
+              color.withValues(alpha: 0.065),
+              color.withValues(alpha: 0.025),
+              color.withValues(alpha: 0.0),
+            ],
+            stops: const [0.0, 0.5, 1.0],
+          ).createShader(Rect.fromCircle(center: position, radius: radius))
+          ..blendMode = BlendMode.screen;
 
     canvas.drawCircle(position, radius, paint);
   }

@@ -71,6 +71,8 @@ class AboutSection extends StatelessWidget {
                 _buildDesktopLayout(data, languageController),
               // Animated stats row
               if (AppConfig.hasStats(languageController))
+                            const SizedBox(height: 50),
+
                 ScrollFadeIn(
                   delay: AppDurations.staggerShort,
                   child: Obx(() {

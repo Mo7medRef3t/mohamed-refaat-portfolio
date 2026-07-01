@@ -129,7 +129,10 @@ class _AnimatedStatCardState extends State<AnimatedStatCard>
 
   @override
   Widget build(BuildContext context) {
-    final accent = widget.accentColor ?? AppColors.heroAccent;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accent =
+        widget.accentColor ??
+        (isDark ? AppColors.heroAccent : AppColorsLight.heroAccent);
 
     return AnimatedBuilder(
       animation: _controller,
@@ -143,12 +146,28 @@ class _AnimatedStatCardState extends State<AnimatedStatCard>
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
               decoration: BoxDecoration(
-                color: AppColors.backgroundLight.withValues(alpha: 0.4),
+                color:
+                    isDark
+                        ? AppColors.backgroundLight.withValues(alpha: 0.4)
+                        : AppColorsLight.backgroundLight.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: accent.withValues(alpha: 0.1),
+                  color:
+                      isDark
+                          ? accent.withValues(alpha: 0.1)
+                          : Colors.black.withValues(alpha: 0.1),
                   width: 1,
                 ),
+                boxShadow:
+                    isDark
+                        ? []
+                        : [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -193,9 +212,15 @@ class _AnimatedStatCardState extends State<AnimatedStatCard>
                     Text(
                       widget.label,
                       style: AppTypography.caption.copyWith(
-                        color: AppColors.textPrimary,
+                        color:
+                            isDark
+                                ? AppColors.textPrimary
+                                : AppColorsLight.textPrimary.withValues(
+                                  alpha: 0.8,
+                                ),
                         fontSize: 12,
                         letterSpacing: 1,
+                        fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                       maxLines: 2,
@@ -264,13 +289,14 @@ class StatsGrid extends StatelessWidget {
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     // Responsive column count
-    final crossAxisCount = screenWidth >= Breakpoints.desktop
-        ? 4
-        : screenWidth >= Breakpoints.tablet
+    final crossAxisCount =
+        screenWidth >= Breakpoints.desktop
+            ? 4
+            : screenWidth >= Breakpoints.tablet
             ? 4
             : screenWidth >= Breakpoints.mobile
-                ? 2
-                : 2;
+            ? 2
+            : 2;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -289,9 +315,7 @@ class StatsGrid extends StatelessWidget {
           suffix: item.suffix,
           label: item.label,
           accentColor: accentColor ?? AppColors.heroAccent,
-          delay: Duration(
-            milliseconds: staggerDelay.inMilliseconds * index,
-          ),
+          delay: Duration(milliseconds: staggerDelay.inMilliseconds * index),
         );
       },
     );
@@ -300,11 +324,7 @@ class StatsGrid extends StatelessWidget {
 
 /// Data class describing a single stat for [StatsGrid].
 class StatItem {
-  const StatItem({
-    required this.value,
-    this.suffix = '',
-    this.label = '',
-  });
+  const StatItem({required this.value, this.suffix = '', this.label = ''});
 
   final int value;
   final String suffix;

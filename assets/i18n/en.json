@@ -93,39 +93,42 @@
       ]
     },
     "experiences": [
-      {
-        "title": "AI Systems Evaluator",
-        "company": "Outlier",
-        "position": "AI Systems Evaluator",
-        "start_date": "Jun 2024",
-        "end_date": "Present",
-        "period": "June 2024 – Present",
-        "description": "Evaluated and optimized AI chatbot responses based on accuracy, reasoning quality, and strict adherence to guidelines. Designed and tested complex prompt scenarios to assess AI model behavior across edge cases. Provided structured feedback to improve model consistency and response reliability. Worked within a distributed remote environment under strict quality standards and deadlines.",
-        "technologies": [
-          "AI Evaluation",
-          "Prompt Engineering",
-          "Code Review",
-          "Quality Assurance"
-        ]
-      },
-      {
-        "title": "Mobile Development Intern",
-        "company": "DEPI Program (MCIT)",
-        "position": "Flutter Developer Intern",
-        "start_date": "Oct 2024",
-        "end_date": "Jun 2025",
-        "period": "October 2024 – June 2025",
-        "description": "Participated in an intensive, hands-on training track focused on advanced Flutter and Android native development. Developed modular Flutter applications integrating RESTful APIs while applying UI/UX best practices and Clean Architecture. Applied Unit Testing fundamentals and technical documentation to ensure high-quality, maintainable codebases. Collaborated on team-based projects with structured codebases and feature-based development.",
-        "technologies": [
-          "Flutter",
-          "Dart",
-          "Clean Architecture",
-          "BLoC/Cubit",
-          "REST APIs",
-          "Unit Testing"
-        ]
-      }
-    ],
+  {
+    "position": "AI Systems Evaluator",
+    "company": "Outlier",
+    "start_date": "Jun 2024",
+    "end_date": "Present",
+    "description": "Evaluated AI chatbot responses for accuracy, reasoning quality, and strict guideline adherence across multiple LLM models\nEngineered complex prompt scenarios to stress-test AI behavior in edge cases, directly improving model reliability\nDelivered structured feedback that contributed to model fine-tuning and response consistency improvements\nMaintained strict quality standards in a fully remote, distributed team environment with tight SLA deadlines",
+    "technologies": [
+      "AI Evaluation",
+      "Prompt Engineering",
+      "Code Review",
+      "Quality Assurance",
+      "LLM Testing"
+    ]
+  },
+  {
+    "position": "Flutter Developer Intern",
+    "company": "Skills Dynamix",
+    "program": "DEPI Program (MCIT) - Digital Egypt Pioneers Initiative",
+    "start_date": "Oct 2024",
+    "end_date": "Jun 2025",
+    "description": "Built production-grade Flutter applications applying Clean Architecture and GetX state management within a selective government initiative\nIntegrated Firebase (Auth, Firestore, Storage) for real-time data sync and secure role-based access control\nImplemented RESTful APIs with optimized offline-first architecture using GetStorage for persistent local data\nCollaborated in agile team environment using Git workflows and feature-based development methodology\nDelivered CoWork Connect — a professional networking platform with real-time messaging and skill-based matching",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Clean Architecture",
+      "BLoC/Cubit",
+      "GetX",
+      "Firebase",
+      "Firestore",
+      "Firebase Auth",
+      "REST APIs",
+      "GetStorage",
+      "Git"
+    ]
+  }
+],
     "projects": [
       {
         "title": "Memory Chat",
@@ -504,7 +507,7 @@
   },
   "home_section": {
     "greeting": "Hi, my name is",
-    "title": "Mohamed Refaat.",
+    "title": "Mohamed Refaat",
     "subtitle": "I build offline-first mobile apps.",
     "bio": "I'm a Mobile Software Engineer specializing in Flutter & Dart. I architect scalable, production-grade applications using Clean Architecture, BLoC/Cubit, and PowerSync for real-time offline-first synchronization. Passionate about integrating AI-driven features and delivering pixel-perfect, user-centric experiences.",
     "view_work": "View My Work",

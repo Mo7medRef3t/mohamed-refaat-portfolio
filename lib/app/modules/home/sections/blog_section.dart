@@ -113,7 +113,7 @@ class _BlogSectionState extends State<BlogSection> {
                     final accent =
                         Get.find<SceneDirector>().currentAccent.value;
                     return NumberedSectionHeading(
-                      number: '04',
+                      number: '02',
                       title: languageController.getText(
                         'blog_section.title',
                         defaultValue: 'Blog',

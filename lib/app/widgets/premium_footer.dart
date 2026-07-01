@@ -22,11 +22,12 @@ const String _appVersion = '1.1.0';
 // PremiumFooter
 // =============================================================================
 
-/// A full-width dark footer with an animated gradient neon top border,
+/// A full-width footer with an animated gradient neon top border,
 /// three-column responsive layout (logo + tagline + copyright | quick links
 /// with hover | social links + contact), newsletter subscription, animated
 /// "Built with Flutter" heart badge, command palette hint, and a 5-click
 /// easter egg on the copyright line.
+/// Theme-aware: uses dark colors in dark mode, light colors in light mode.
 class PremiumFooter extends StatelessWidget {
   const PremiumFooter({super.key});
 
@@ -34,15 +35,22 @@ class PremiumFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final isDesktop = width >= Breakpoints.tablet;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return RepaintBoundary(
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: AppColors.backgroundDark.withValues(alpha: 0.85),
+          color:
+              isDark
+                  ? AppColors.backgroundDark.withValues(alpha: 0.85)
+                  : AppColorsLight.backgroundDark.withValues(alpha: 0.95),
           border: Border(
             top: BorderSide(
-              color: Colors.white.withValues(alpha: 0.04),
+              color:
+                  isDark
+                      ? Colors.white.withValues(alpha: 0.04)
+                      : Colors.black.withValues(alpha: 0.1),
             ),
           ),
         ),
@@ -88,18 +96,18 @@ class _DesktopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Left — brand identity
-        Expanded(flex: 3, child: _BrandColumn()),
-        SizedBox(width: 48),
-        // Center — quick navigation links
-        Expanded(flex: 2, child: _QuickLinksColumn()),
-        SizedBox(width: 48),
-        // Right — social icons + newsletter
-        Expanded(flex: 3, child: _ConnectColumn()),
-      ],
-    );
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Left — brand identity
+      Expanded(flex: 3, child: _BrandColumn()),
+      SizedBox(width: 48),
+      // Center — quick navigation links
+      Expanded(flex: 2, child: _QuickLinksColumn()),
+      SizedBox(width: 48),
+      // Right — social icons + newsletter
+      Expanded(flex: 3, child: _ConnectColumn()),
+    ],
+  );
 }
 
 // =============================================================================
@@ -111,15 +119,15 @@ class _MobileLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _BrandColumn(centered: true),
-        SizedBox(height: 36),
-        _QuickLinksColumn(centered: true),
-        SizedBox(height: 36),
-        _ConnectColumn(centered: true),
-      ],
-    );
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      _BrandColumn(centered: true),
+      SizedBox(height: 36),
+      _QuickLinksColumn(centered: true),
+      SizedBox(height: 36),
+      _ConnectColumn(centered: true),
+    ],
+  );
 }
 
 // =============================================================================
@@ -134,12 +142,15 @@ class _BrandColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final languageController = Get.find<LanguageController>();
-    const secondaryColor = AppColors.textSecondary;
-    const brightColor = AppColors.textBright;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
+    final brightColor =
+        isDark ? AppColors.textBright : AppColorsLight.textBright;
 
     return Obx(() {
-      final data = languageController.cvData['personal_info']
-              as Map<String, dynamic>? ??
+      final data =
+          languageController.cvData['personal_info'] as Map<String, dynamic>? ??
           <String, dynamic>{};
       final name = (data['name'] as String?) ?? 'Your Name';
 
@@ -196,7 +207,9 @@ class _QuickLinksColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const brightColor = AppColors.textBright;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final brightColor =
+        isDark ? AppColors.textBright : AppColorsLight.textBright;
 
     const sections = <_QuickLinkItem>[
       _QuickLinkItem('home', 'Home'),
@@ -222,11 +235,13 @@ class _QuickLinksColumn extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        ...sections.map((item) => _QuickLinkButton(
-              sectionId: item.id,
-              label: item.label,
-              centered: centered,
-            )),
+        ...sections.map(
+          (item) => _QuickLinkButton(
+            sectionId: item.id,
+            label: item.label,
+            centered: centered,
+          ),
+        ),
       ],
     );
   }
@@ -259,7 +274,10 @@ class _QuickLinkButtonState extends State<_QuickLinkButton> {
 
   @override
   Widget build(BuildContext context) {
-    const baseColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final baseColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
+    final accentColor = isDark ? AppColors.accent : AppColorsLight.accent;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -287,14 +305,14 @@ class _QuickLinkButtonState extends State<_QuickLinkButton> {
                   duration: AppDurations.fast,
                   width: _hovered ? 20 : 0,
                   height: 1,
-                  color: AppColors.accent.withValues(alpha: 0.6),
+                  color: accentColor.withValues(alpha: 0.6),
                 ),
                 if (_hovered) const SizedBox(width: 8),
                 Text(
                   widget.label,
                   style: GoogleFonts.jetBrainsMono(
                     fontSize: 13,
-                    color: _hovered ? AppColors.accent : baseColor,
+                    color: _hovered ? accentColor : baseColor,
                   ),
                 ),
               ],
@@ -318,11 +336,13 @@ class _ConnectColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final languageController = Get.find<LanguageController>();
-    const brightColor = AppColors.textBright;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final brightColor =
+        isDark ? AppColors.textBright : AppColorsLight.textBright;
 
     return Obx(() {
-      final data = languageController.cvData['personal_info']
-              as Map<String, dynamic>? ??
+      final data =
+          languageController.cvData['personal_info'] as Map<String, dynamic>? ??
           <String, dynamic>{};
       final github = (data['github'] as String?) ?? '';
       final linkedin = (data['linkedin'] as String?) ?? '';
@@ -360,9 +380,8 @@ class _ConnectColumn extends StatelessWidget {
               links: links,
               iconSize: 20,
               spacing: 8,
-              alignment: centered
-                  ? MainAxisAlignment.center
-                  : MainAxisAlignment.start,
+              alignment:
+                  centered ? MainAxisAlignment.center : MainAxisAlignment.start,
             ),
           if (email.isNotEmpty) ...[
             const SizedBox(height: 12),
@@ -397,7 +416,10 @@ class _EmailLinkState extends State<_EmailLink> {
 
   @override
   Widget build(BuildContext context) {
-    const baseColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final baseColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
+    final accentColor = isDark ? AppColors.accent : AppColorsLight.accent;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
@@ -414,10 +436,10 @@ class _EmailLinkState extends State<_EmailLink> {
           widget.email,
           style: GoogleFonts.jetBrainsMono(
             fontSize: 12,
-            color: _hovered ? AppColors.accent : baseColor,
+            color: _hovered ? accentColor : baseColor,
             decoration:
                 _hovered ? TextDecoration.underline : TextDecoration.none,
-            decorationColor: AppColors.accent.withValues(alpha: 0.5),
+            decorationColor: accentColor.withValues(alpha: 0.5),
           ),
         ),
       ),
@@ -485,12 +507,18 @@ class _NewsletterSubscribeState extends State<_NewsletterSubscribe>
 
   @override
   Widget build(BuildContext context) {
-    const secondaryColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
+    final brightColor =
+        isDark ? AppColors.textBright : AppColorsLight.textBright;
+    final accentColor = isDark ? AppColors.expAccent : AppColorsLight.expAccent;
 
     return Column(
-      crossAxisAlignment: widget.centered
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.start,
+      crossAxisAlignment:
+          widget.centered
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
@@ -518,26 +546,26 @@ class _NewsletterSubscribeState extends State<_NewsletterSubscribe>
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.expAccent.withValues(alpha: 0.12),
+                      color: accentColor.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: AppColors.expAccent.withValues(alpha: 0.3),
+                        color: accentColor.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.check_circle_outline_rounded,
                           size: 16,
-                          color: AppColors.expAccent,
+                          color: accentColor,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           'Subscribed!',
                           style: GoogleFonts.jetBrainsMono(
                             fontSize: 12,
-                            color: AppColors.expAccent,
+                            color: accentColor,
                           ),
                         ),
                       ],
@@ -554,7 +582,10 @@ class _NewsletterSubscribeState extends State<_NewsletterSubscribe>
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color:
+                      isDark
+                          ? Colors.white.withValues(alpha: 0.1)
+                          : Colors.black.withValues(alpha: 0.15),
                 ),
               ),
               child: Row(
@@ -565,7 +596,7 @@ class _NewsletterSubscribeState extends State<_NewsletterSubscribe>
                       onSubmitted: (_) => _subscribe(),
                       style: GoogleFonts.jetBrainsMono(
                         fontSize: 12,
-                        color: AppColors.textBright,
+                        color: brightColor,
                       ),
                       decoration: InputDecoration(
                         hintText: 'your@email.com',
@@ -605,7 +636,11 @@ class _SubscribeButtonState extends State<_SubscribeButton> {
   bool _hovered = false;
 
   @override
-  Widget build(BuildContext context) => MouseRegion(
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = isDark ? AppColors.accent : AppColorsLight.accent;
+
+    return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       cursor: SystemMouseCursors.click,
@@ -615,9 +650,7 @@ class _SubscribeButtonState extends State<_SubscribeButton> {
           duration: AppDurations.fast,
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: _hovered
-                ? AppColors.accent
-                : AppColors.accent.withValues(alpha: 0.8),
+            color: _hovered ? accentColor : accentColor.withValues(alpha: 0.8),
             borderRadius: const BorderRadius.only(
               topRight: Radius.circular(7),
               bottomRight: Radius.circular(7),
@@ -632,6 +665,7 @@ class _SubscribeButtonState extends State<_SubscribeButton> {
         ),
       ),
     );
+  }
 }
 
 // =============================================================================
@@ -639,10 +673,7 @@ class _SubscribeButtonState extends State<_SubscribeButton> {
 // =============================================================================
 
 class _CopyrightEasterEgg extends StatefulWidget {
-  const _CopyrightEasterEgg({
-    required this.name,
-    this.centered = false,
-  });
+  const _CopyrightEasterEgg({required this.name, this.centered = false});
 
   final String name;
   final bool centered;
@@ -705,12 +736,16 @@ class _CopyrightEasterEggState extends State<_CopyrightEasterEgg>
   @override
   Widget build(BuildContext context) {
     final year = DateTime.now().year;
-    const secondaryColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
+    final accentColor = isDark ? AppColors.accent : AppColorsLight.accent;
 
     return Column(
-      crossAxisAlignment: widget.centered
-          ? CrossAxisAlignment.center
-          : CrossAxisAlignment.start,
+      crossAxisAlignment:
+          widget.centered
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
@@ -728,8 +763,9 @@ class _CopyrightEasterEggState extends State<_CopyrightEasterEgg>
             animation: _eggAnimation,
             builder: (_, __) {
               final v = _eggAnimation.value;
-              final message = _easterEggMessages[
-                  DateTime.now().second % _easterEggMessages.length];
+              final message =
+                  _easterEggMessages[DateTime.now().second %
+                      _easterEggMessages.length];
               return Opacity(
                 opacity: v,
                 child: Transform.translate(
@@ -738,19 +774,21 @@ class _CopyrightEasterEggState extends State<_CopyrightEasterEgg>
                     padding: const EdgeInsets.only(top: 8),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
-                        color: AppColors.accent.withValues(alpha: 0.08),
+                        color: accentColor.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: AppColors.accent.withValues(alpha: 0.2),
+                          color: accentColor.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Text(
                         message,
                         style: GoogleFonts.jetBrainsMono(
                           fontSize: 11,
-                          color: AppColors.accent,
+                          color: accentColor,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -774,7 +812,9 @@ class _BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const secondaryColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
 
     return Container(
       width: double.infinity,
@@ -782,7 +822,10 @@ class _BottomBar extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: Colors.white.withValues(alpha: 0.05),
+            color:
+                isDark
+                    ? Colors.white.withValues(alpha: 0.05)
+                    : Colors.black.withValues(alpha: 0.1),
           ),
         ),
       ),
@@ -843,7 +886,9 @@ class _BuiltWithFlutterState extends State<_BuiltWithFlutter>
 
   @override
   Widget build(BuildContext context) {
-    const secondaryColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -858,14 +903,10 @@ class _BuiltWithFlutterState extends State<_BuiltWithFlutter>
         AnimatedBuilder(
           animation: _heartCtrl,
           builder: (_, __) {
-            final scale =
-                0.85 + 0.3 * math.sin(_heartCtrl.value * math.pi);
+            final scale = 0.85 + 0.3 * math.sin(_heartCtrl.value * math.pi);
             return Transform.scale(
               scale: scale,
-              child: const Text(
-                '\u2764\uFE0F',
-                style: TextStyle(fontSize: 12),
-              ),
+              child: const Text('\u2764\uFE0F', style: TextStyle(fontSize: 12)),
             );
           },
         ),
@@ -914,7 +955,10 @@ class _PoweredByFlutterState extends State<_PoweredByFlutter>
 
   @override
   Widget build(BuildContext context) {
-    const secondaryColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
+    final accentColor = isDark ? AppColors.accent : AppColorsLight.accent;
 
     return MouseRegion(
       onEnter: (_) => _onHoverChanged(true),
@@ -931,18 +975,19 @@ class _PoweredByFlutterState extends State<_PoweredByFlutter>
           ),
           AnimatedBuilder(
             animation: _spinCtrl,
-            builder: (_, child) => Transform(
-                alignment: Alignment.center,
-                transform:
-                    Matrix4.rotationY(_spinCtrl.value * 2 * math.pi),
-                child: child,
-              ),
+            builder:
+                (_, child) => Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(_spinCtrl.value * 2 * math.pi),
+                  child: child,
+                ),
             child: FlutterLogo(
               size: 14,
               style: FlutterLogoStyle.markOnly,
-              textColor: _hovered
-                  ? AppColors.accent
-                  : secondaryColor.withValues(alpha: 0.5),
+              textColor:
+                  _hovered
+                      ? accentColor
+                      : secondaryColor.withValues(alpha: 0.5),
             ),
           ),
           const SizedBox(width: 2),
@@ -950,9 +995,10 @@ class _PoweredByFlutterState extends State<_PoweredByFlutter>
             'Flutter',
             style: GoogleFonts.jetBrainsMono(
               fontSize: 11,
-              color: _hovered
-                  ? AppColors.accent
-                  : secondaryColor.withValues(alpha: 0.5),
+              color:
+                  _hovered
+                      ? accentColor
+                      : secondaryColor.withValues(alpha: 0.5),
             ),
           ),
         ],
@@ -972,7 +1018,9 @@ class _CommandPaletteHint extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMac = defaultTargetPlatform == TargetPlatform.macOS;
     final shortcut = isMac ? '\u2318K' : 'Ctrl+K';
-    const secondaryColor = AppColors.textSecondary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final secondaryColor =
+        isDark ? AppColors.textSecondary : AppColorsLight.textSecondary;
     final languageController = Get.find<LanguageController>();
 
     return Row(
@@ -989,10 +1037,15 @@ class _CommandPaletteHint extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
           decoration: BoxDecoration(
             color:
-                Colors.white.withValues(alpha: 0.05),
+                isDark
+                    ? Colors.white.withValues(alpha: 0.05)
+                    : Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(3),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.1),
+              color:
+                  isDark
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.black.withValues(alpha: 0.15),
             ),
           ),
           child: Text(

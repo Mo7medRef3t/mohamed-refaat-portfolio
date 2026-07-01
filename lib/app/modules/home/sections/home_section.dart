@@ -410,15 +410,16 @@ class _HeroNameWithGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final nameText =
         languageController
-            .getText('home_section.title', defaultValue: 'YUSUF IHSAN GORGEL')
+            .getText('home_section.title', defaultValue: 'MOHAMED REFAAT')
             .toUpperCase();
 
     final nameStyle = GoogleFonts.spaceGrotesk(
       fontSize: heroFontSize,
       fontWeight: FontWeight.w800,
-      color: AppColors.textBright,
+      color: isDark ? AppColors.textBright : AppColorsLight.textBright,
       letterSpacing: -4,
       height: 1.0,
     );
@@ -452,8 +453,16 @@ class _HeroNameWithGradient extends StatelessWidget {
                   shaderCallback:
                       (bounds) => LinearGradient(
                         colors: [
-                          AppColors.textBright,
-                          Color.lerp(AppColors.textBright, accent, 0.20)!,
+                          isDark
+                              ? AppColors.textBright
+                              : AppColorsLight.textBright,
+                          Color.lerp(
+                            isDark
+                                ? AppColors.textBright
+                                : AppColorsLight.textBright,
+                            accent,
+                            0.20,
+                          )!,
                         ],
                       ).createShader(bounds),
                   child: Text(

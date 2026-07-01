@@ -382,6 +382,7 @@ class _ExperienceDetail extends StatelessWidget {
     final exp = experience;
     final position = (exp['position'] as String?) ?? '';
     final company = (exp['company'] as String?) ?? '';
+    final program = (exp['program'] as String?) ?? ''; // ← جديد
     final startDate = (exp['start_date'] as String?) ?? '';
     final endDate =
         (exp['end_date'] as String?) ??
@@ -390,6 +391,7 @@ class _ExperienceDetail extends StatelessWidget {
           defaultValue: 'Present',
         );
     final description = (exp['description'] as String?) ?? '';
+    final technologies = _extractTechnologies(exp);
 
     final bullets =
         description
@@ -423,6 +425,19 @@ class _ExperienceDetail extends StatelessWidget {
               color: accent,
             ),
           ),
+          // NEW: Program line (if exists)
+          if (program.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Text(
+              program,
+              style: GoogleFonts.jetBrainsMono(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textSecondaryOf(context),
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
           const SizedBox(height: 8),
           Text(
             '$startDate — $endDate',
@@ -449,8 +464,50 @@ class _ExperienceDetail extends StatelessWidget {
                 ],
               ),
             ),
+          // Technologies pills
+          if (technologies.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children:
+                  technologies
+                      .map(
+                        (tech) => Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: accent.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: accent.withValues(alpha: 0.2),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            tech,
+                            style: GoogleFonts.jetBrainsMono(
+                              fontSize: 11,
+                              color: accent,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+            ),
+          ],
         ],
       );
     });
+  }
+
+  List<String> _extractTechnologies(Map<String, dynamic> exp) {
+    if (exp['technologies'] case final List<dynamic> techs) {
+      return List<String>.from(techs);
+    }
+    return [];
   }
 }
