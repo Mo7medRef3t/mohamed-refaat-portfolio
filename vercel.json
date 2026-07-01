@@ -1,5 +1,26 @@
 {
   "buildCommand": "/tmp/flutter/bin/flutter build web --release",
   "outputDirectory": "build/web",
-  "installCommand": "git clone https://github.com/flutter/flutter.git -b stable /tmp/flutter && /tmp/flutter/bin/flutter precache --web"
+  "installCommand": "git clone https://github.com/flutter/flutter.git -b stable /tmp/flutter && /tmp/flutter/bin/flutter precache --web",
+  "rewrites": [
+    {
+      "source": "/assets/data/:path*",
+      "destination": "/assets/data/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/pdf"
+        }
+      ]
+    }
+  ]
 }
