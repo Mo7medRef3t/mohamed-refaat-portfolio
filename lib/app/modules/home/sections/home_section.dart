@@ -370,13 +370,9 @@ class _AnimatedCTAButtonsState extends State<_AnimatedCTAButtons>
                   CinematicButton(
                     label: downloadCvLabel,
                     onTap: () async {
-                      final uri = Uri(
-                        scheme: Uri.base.scheme,
-                        host: Uri.base.host,
-                        port: Uri.base.port,
-                        path: 'assets/data/cv.pdf',
+                      final uri = Uri.parse(
+                        'https://github.com/Mo7medRef3t/mohamed-refaat-portfolio/releases/download/v1.0.0/Mohamed_Refaat_Flutter_resume.pdf',
                       );
-
                       if (await canLaunchUrl(uri)) {
                         await launchUrl(
                           uri,
